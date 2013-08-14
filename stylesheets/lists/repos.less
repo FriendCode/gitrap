@@ -1,0 +1,27 @@
+.list-repos {
+	list-style: none;
+
+	.repo-item {
+		padding: 10px 15px;
+		background: #BDC3C7;
+		color: #fff;
+		cursor: pointer;
+
+		&:hover {
+			background: #3498DB;
+		}
+
+		p {
+			&.name {
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+
+			&.description {
+				display: none;
+				font-weight: 100;
+			}
+		}
+	}
+}

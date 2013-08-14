@@ -1,0 +1,28 @@
+<div class="main">
+	<div class="main-body">
+		<% if (!logged) { %>
+			<%= view.component("login", {}, "login") %>
+		<% } else { %>
+			<div class="main-repos">
+				<input class="search-query" placeholder="Search Repos" />
+				<%= view.component("list.repos", {}, "repos") %>
+			</div>
+			<div class="main-toolbar">
+				<a href="#" class="btn action-new-conversation">New conversation</a>
+			</div>
+			<div class="main-conversations"></div>
+			<form class="main-new-conversation">
+				<div class="user">
+					<img src="<%- user.get("avatar_url") %>" />
+					<h2>Post as <%- user.get("name") %></h2>
+				</div>
+				<input class="title" placeholder="Conversation Title" />
+				<textarea placeholder="Your message" class="content"></textarea>
+				<input type="submit" class="submit" value="Start conversation" />
+			</form>
+		<% } %>
+	</div>
+	<div class="main-footer">
+		<a href="https://github.com/SamyPesse/gitrap">Fork on GitHub</a>
+	</div>
+</div>
