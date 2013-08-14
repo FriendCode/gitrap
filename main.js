@@ -4,11 +4,13 @@ require([
     "yapp/args",
 
     "models/repo",
+    "models/message",
     "utils/github",
+    "views/conversation",
 
     "views/views",
     "ressources/ressources"
-], function(_, yapp, args, Repo, github) {
+], function(_, yapp, args, Repo, Message, github, ConversationView) {
     // Configure yapp
     yapp.configure(args);
 
@@ -27,7 +29,8 @@ require([
         },
         events: {
             "keyup .main-repos .search-query": "searchRepos",
-            "click .main-toolbar .action-new-conversation": "newConversation"
+            "click .main-toolbar .action-new-conversation": "newConversation",
+            "submit .main-new-conversation": "startConversation"
         },
 
         /* Constructor */
@@ -75,7 +78,12 @@ require([
             repo.load(parts[0], parts[1]).done(function() {
                 return repo.initBranch("gitrap");
             }).then(function() {
-                console.log("ready :)");
+                this.$(".main-body").removeClass("mode-newconversation");
+                var conversation = new ConversationView({
+                    "repo": repo,
+                    "ref": parts.slice(2).join("/")
+                });
+                conversation.$el.appendTo(this.$(".main-conversations"));
             }, function(err) {
                 console.log("error with repo", err);
             });
@@ -87,6 +95,22 @@ require([
         newConversation: function(e) {
             if (e != null) e.preventDefault();
             this.$(".main-body").toggleClass("mode-newconversation");
+        },
+
+        /* (event) Start conversation */
+        startConversation: function(e) {
+            if (e != null) e.preventDefault();
+            var title = this.$(".main-new-conversation .title").val();
+            var content = this.$(".main-new-conversation .content").val();
+
+            var message = new Message();
+            message.post(this.currentConversation, title, content).then(_.bind(function() {
+                this.$(".main-body").removeClass("mode-newconversation");
+                this.$(".main-new-conversation .title").val("");
+                this.$(".main-new-conversation .content").val("");
+            }, this), function() {
+                alert("error posting");
+            });
         }
     });
 

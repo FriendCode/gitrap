@@ -29,7 +29,6 @@ define([
 			});
 			var user = this.api.getUser();
 			user.show(username, _.bind(function(err, user) {
-				console.log("user ", user);
 				this.user = new User({}, user);
 				this.refreshRepos();
 			}, this));
@@ -59,7 +58,7 @@ define([
 			}, this));
 
 			return this;
-		}
+		},
 	});
 
 	var github = new GithubInt();
