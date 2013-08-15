@@ -30,6 +30,9 @@ exports.config = {
         "vendors/github": {
             deps: ["vendors/base64"],
             exports: "Github"
+        },
+        "vendors/markdown": {
+            exports: "markdown"
         }
     },
 };

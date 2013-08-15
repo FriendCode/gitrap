@@ -37,6 +37,7 @@ require([
         initialize: function() {
             Application.__super__.initialize.apply(this, arguments);
             this.currentConversation = null;
+            this.conversations = [];
 
             github.on("logged", this.render, this);
             return this;
@@ -64,7 +65,7 @@ require([
 
         /* (event) Change current conversation */
         changeConversation: function(conversation) {
-            var parts, repo, that;
+            var parts, repo, that, maxconvs, conversation;
             that = this;
             this.currentConversation = conversation;
             
@@ -78,12 +79,24 @@ require([
             repo.load(parts[0], parts[1]).done(function() {
                 return repo.initBranch("gitrap");
             }).then(function() {
+                maxconvs = _.max([1, Math.floor(that.$(".main-conversations").width()/600)]);
+                console.log("max conv ", maxconvs);
                 this.$(".main-body").removeClass("mode-newconversation");
-                var conversation = new ConversationView({
-                    "repo": repo,
-                    "ref": parts.slice(2).join("/")
+
+                if (maxconvs == _.size(that.conversations)) {
+                    that.conversations[0].remove();
+                    that.conversations.splice(0, 1);
+                }
+                conversation = new ConversationView({
+                    "ref": that.currentConversation,
+                    "showPostMessage": _.size(parts) > 2
                 });
-                conversation.$el.appendTo(this.$(".main-conversations"));
+                conversation.render();
+                conversation.$el.appendTo(that.$(".main-conversations"));
+                that.conversations.push(conversation)
+
+                that.$("*[data-gitrap='"+that.currentConversation+"']").addClass("active");
+                that.$("*[data-gitrap!='"+that.currentConversation+"']").removeClass("active");
             }, function(err) {
                 console.log("error with repo", err);
             });

@@ -19,6 +19,7 @@ define([
             }
         },
         finish: function() {
+            this.$el.attr("data-gitrap", this.model.get("owner.login")+"/"+this.model.get("name"));
             return RepoItem.__super__.finish.apply(this, arguments);
         },
         open: function() {

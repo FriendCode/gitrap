@@ -1,0 +1,32 @@
+.list-messages {
+	list-style: none;
+
+	.message-item {
+		min-height: 72px;
+		margin: 25px;
+
+		.message-author {
+			float: left;
+			margin-top: 6px;
+
+			img {
+				.border-radius(48px);
+				width: 48px;
+				height: 48px;
+			}
+		}
+
+		.message-body {
+			padding: 12px;
+			background: #fff;
+			.border-radius(1px);
+			margin-left: 65px;
+			.box-shadow(0px 1px 4px -1px #888);
+			cursor: pointer;
+
+			.author-name {
+				margin-bottom: 10px;
+			}
+		}
+	}
+}

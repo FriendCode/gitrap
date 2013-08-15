@@ -1,1 +1,11 @@
-<%= view.component("list.messages", {}, "messages") %>
+<%= view.component("list.messages", {
+	collection: {
+		loaderArgs: [options.ref]
+	}
+}, "messages") %>
+<% if (options.showPostMessage) { %>
+<form class="message-input">
+	<textarea placeholder="Comment this conversation"></textarea>
+	<input type="submit" value="Post" />
+</form>
+<% } %>

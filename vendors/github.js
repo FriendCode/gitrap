@@ -335,6 +335,13 @@
         });
       };
 
+      // Show commit information
+      // -------
+
+      this.listCommits = function(sha, path, cb) {
+        _request("GET", repoPath + "/commits?sha="+sha+"&path="+path, null, cb);
+      };
+
       // Show repository information
       // -------
 

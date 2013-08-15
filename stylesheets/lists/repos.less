@@ -4,10 +4,18 @@
 	.repo-item {
 		padding: 10px 15px;
 		background: #BDC3C7;
+		border-left: 6px solid transparent;
 		color: #fff;
 		cursor: pointer;
 
+		&.active, &.active:hover {
+			border-left: 6px solid #3498DB;
+			color: #3498DB;
+			background: #ECF0F1;
+		}
+
 		&:hover {
+			color: #fff;
 			background: #3498DB;
 		}
 

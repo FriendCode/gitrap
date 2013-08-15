@@ -1,8 +1,10 @@
 define([
     "Underscore",
     "yapp/yapp",
-    "models/message"
-], function(_, yapp, Message) {
+    "vendors/markdown",
+    "models/message",
+    "utils/github"
+], function(_, yapp, markdown, Message, github) {
     var logging = yapp.Logger.addNamespace("messages");
 
     // Collection
@@ -18,10 +20,17 @@ define([
          *  Load diffs using repository id and commit sha
          */
         get: function(ref) {
-            var self = this;
+            var that = this;
+            var message = new Message();
+            var d = new yapp.Deferred();
             if (ref == null) {
                 throw "Empty repoid or sha for getting diffs";
             }
+
+            return message.loadChildren(ref).done(function(messages) {
+                console.log("messages : ", messages);
+                that.reset(messages);
+            });
         },
     });
 
@@ -30,16 +39,20 @@ define([
         className: "message-item",
         template: "lists/message.html",
         events: {
-            
+            "click .message-body": "open"
         },
         templateContext: function() {
             return {
                 object: this.model,
+                content: markdown.toHTML(this.model.get("content"))
             }
         },
         finish: function() {
             return MessageItem.__super__.finish.apply(this, arguments);
         },
+        open: function() {
+            yapp.History.navigate(this.model.get("ref"));
+        }
     });
 
     // List View
