@@ -1,4 +1,4 @@
-GitRap : Powerful discourse system running on top of Git/GitHub.
+GitRap : Discourse for GIT
 ======
 
 [![Code Now](https://friendco.de/widgets/image/codenow?url=https%3A%2F%2Fgithub.com%2FSamyPesse%2Fgitrap.git)](https://friendco.de/widgets/url/codenow?url=https%3A%2F%2Fgithub.com%2FSamyPesse%2Fgitrap.git)
