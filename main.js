@@ -3,6 +3,8 @@ require([
     "yapp/yapp",
     "yapp/args",
 
+    "vendors/base64",
+
     "models/repo",
     "models/message",
     "utils/github",
@@ -10,7 +12,7 @@ require([
 
     "views/views",
     "ressources/ressources"
-], function(_, yapp, args, Repo, Message, github, ConversationView) {
+], function(_, yapp, args, Base64, Repo, Message, github, ConversationView) {
     // Configure yapp
     yapp.configure(args);
 
@@ -25,27 +27,29 @@ require([
             "icon": yapp.Urls.static("images/favicon.png")
         },
         routes: {
-            "*actions": "changeConversation",
+            ":owner/:name": "changeConversation",
+            ":owner/:name/:sha": "changeConversation"
         },
         events: {
-            "keyup .main-repos .search-query": "searchRepos",
-            "click .main-toolbar .action-new-conversation": "newConversation",
-            "submit .main-new-conversation": "startConversation"
+            "keyup .main-repos .search-query": "searchRepos"
         },
 
         /* Constructor */
         initialize: function() {
             Application.__super__.initialize.apply(this, arguments);
-            this.currentConversation = null;
-            this.conversations = [];
-
             github.on("logged", this.render, this);
+            this.repo = null;
+            this.path = null;
+            this.conversations = [];
+            this.conversationArgs = [];
             return this;
         },
 
         /* Fnish rendering */
         finish: function() {
-            if (this.currentConversation != null) this.changeConversation(this.currentConversation);
+            if (_.size(this.conversationArgs) > 1) {
+                this.changeConversation.apply(this, this.conversationArgs);
+            }
             return Application.__super__.finish.apply(this, arguments);
         },
 
@@ -64,67 +68,55 @@ require([
         },
 
         /* (event) Change current conversation */
-        changeConversation: function(conversation) {
-            var parts, repo, that, maxconvs, conversation;
+        changeConversation: function(owner, name, path) {
+            var that, conv, i, curl;
             that = this;
-            this.currentConversation = conversation;
+            this.conversationArgs = _.values(arguments);
             
-            if (!github.logged) {
-                return this;
+            if (!github.logged) return this;
+
+            if (this.repo != null
+            && (this.repo.get("owner.login") != owner
+            || this.repo.get("name") != name)) {
+                this.clearConversations();
             }
-            parts = this.currentConversation.split("/");
-            if (_.size(parts) < 2) { return this; }
 
-            repo = new Repo();
-            repo.load(parts[0], parts[1]).done(function() {
-                return repo.initBranch("gitrap");
+            curl = owner+"/"+name;
+            if (path != null) curl = curl+"/"+path;
+
+            this.path = path == null ? "" : Base64.decode(path);
+            this.repo = new github.Repo();
+            this.repo.load(owner, name).done(function() {
+                return that.repo.checkBranch("gitrap");
             }).then(function() {
-                maxconvs = _.max([1, Math.floor(that.$(".main-conversations").width()/600)]);
-                console.log("max conv ", maxconvs);
-                this.$(".main-body").removeClass("mode-newconversation");
+                i = that.path.length == 0 ? 0 : _.size(that.path.split("/"));
+                that.clearConversations(i);
 
-                if (maxconvs == _.size(that.conversations)) {
-                    that.conversations[0].remove();
-                    that.conversations.splice(0, 1);
-                }
-                conversation = new ConversationView({
-                    "ref": that.currentConversation,
-                    "showPostMessage": _.size(parts) > 2
+                conv = new ConversationView({
+                    "repo": that.repo,
+                    "path": that.path
                 });
-                conversation.render();
-                conversation.$el.appendTo(that.$(".main-conversations"));
-                that.conversations.push(conversation)
+                conv.render();
+                conv.$el.appendTo(that.$(".main-conversations"));
+                that.conversations[i] = conv;
 
-                that.$("*[data-gitrap='"+that.currentConversation+"']").addClass("active");
-                that.$("*[data-gitrap!='"+that.currentConversation+"']").removeClass("active");
-            }, function(err) {
-                console.log("error with repo", err);
+                that.$("*[data-gitrap]").each(function() {
+                    $(this).toggleClass("active", curl.indexOf($(this).data("gitrap")) === 0);
+                });
             });
             
             return this;
         },
 
-        /* (event) New conversation */
-        newConversation: function(e) {
-            if (e != null) e.preventDefault();
-            this.$(".main-body").toggleClass("mode-newconversation");
+        /* Clear conversations */
+        clearConversations: function(n) {
+            var maxConvs = _.max([1, Math.floor(this.$(".main-conversations").width()/600)]);
+            _.each(this.conversations, function(conversation, i) {
+                if (n != null && i < n && i < maxConvs && i != n) return;
+                conversation.remove();
+                this.conversations.splice(i, 1);
+            }, this);
         },
-
-        /* (event) Start conversation */
-        startConversation: function(e) {
-            if (e != null) e.preventDefault();
-            var title = this.$(".main-new-conversation .title").val();
-            var content = this.$(".main-new-conversation .content").val();
-
-            var message = new Message();
-            message.post(this.currentConversation, title, content).then(_.bind(function() {
-                this.$(".main-body").removeClass("mode-newconversation");
-                this.$(".main-new-conversation .title").val("");
-                this.$(".main-new-conversation .content").val("");
-            }, this), function() {
-                alert("error posting");
-            });
-        }
     });
 
     var app = new Application();

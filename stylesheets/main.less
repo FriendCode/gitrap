@@ -34,16 +34,18 @@ body {
 		left: 0px;
 		right: 0px;
 		bottom: 40px;
+		overflow: hidden;
 
 		/* List repos */
 		.main-repos {
-			position: absolute;
+			position: fixed;
 			top: 0px;
 			left: 0px;
-			bottom: 0px;
-			width: 200px;
-			overflow-y: auto;
-			background: #BDC3C7;
+			bottom: 40px;
+			width: 244px;
+			overflow: hidden;
+			background: #3498db;
+			.border-radius(0px);
 
 			.search-query {
 				position: absolute;
@@ -62,126 +64,42 @@ body {
 			}
 
 			.list-repos {
-				margin-top: 37px;
+				overflow-y: auto;
+				position: absolute;
+				top: 37px;
+				bottom: 0px;
+				left: 0px;
+				right: 0px;
 			}
-		}
 
-		/* Toolbar */
-		.main-toolbar {
-			position: absolute;
-			top: 0px;
-			left: 200px;
-			right: 0px;
-			height: 37px;
-			overflow: hidden;
-			background: #fff;
-
-			.btn {
+			.action-link-user {
+				position: absolute;
+				bottom: 0px;
+				left: 0px;
+				right: 0px;
+				overflow: hidden;
+				background: #2ecc71;
+				color: #fff;
 				line-height: 35px;
-				padding: 10px 8px;
+				padding: 6px 8px;
 				text-decoration: none;
+				text-align: center;
 
 				&:hover {
-					background: #2ECC71;
+					background: #27ae60;
 					color: #fff;
 				}
 			}
 		}
+		
 
 		/* Conversations */
 		.main-conversations {
 			position: absolute;
-			top: 37px;
-			left: 200px;
+			top: 0px;
+			left: 244px;
 			bottom: 0px;
 			right: 0px;
-		}
-
-		/* New conversation */
-		.main-new-conversation {
-			position: absolute;
-			top: 37px;
-			left: 200px;
-			bottom: 0px;
-			right: 0px;
-			display: none;
-
-			.user {
-				position: absolute;
-				top: 20px;
-				left: 20px;
-				right: 20px;
-				width: 240px;
-				text-align: center;
-
-				img {
-					width: 128px;
-					height: 128px;
-					.border-radius(200px);
-					margin-bottom: 15px;
-				}
-			}
-
-			.title {
-				position: absolute;
-				top: 20px;
-				left: 280px;
-				right: 20px;
-				background: #fff;
-				.border-radius(0px);
-				.box-sizing(border-box);
-				padding: 12px 12px;
-				margin: 0px;
-				.box-shadow(none);
-				-webkit-appearance: none;
-				outline: none;
-				border: none;
-				font-size: 18px;
-			}
-
-			.content {
-				position: absolute;
-				top: 80px;
-				left: 280px;
-				bottom: 80px;
-				right: 20px;
-				resize: none;
-				background: #fff;
-				.border-radius(0px);
-				.box-sizing(border-box);
-				padding: 12px 12px;
-				margin: 0px;
-				.box-shadow(none);
-				-webkit-appearance: none;
-				outline: none;
-				border: none;
-				font-size: 18px;
-			}
-
-			.submit {
-				position: absolute;
-				bottom: 20px;
-				right: 20px;
-				border: none;
-				background: #2ECC71;
-				color: #fff;
-				padding: 14px 20px;
-				text-transform: uppercase;
-				cursor: pointer;
-
-				&:hover {
-					background: #27AE60;
-				}
-			}
-		}
-
-		&.mode-newconversation {
-			.main-conversations {
-				display: none;
-			}
-			.main-new-conversation {
-				display: block;
-			}
 		}
 	}
 }

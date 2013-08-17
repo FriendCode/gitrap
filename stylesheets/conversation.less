@@ -1,23 +1,45 @@
 .conversation {
 	width: 100%;
-	max-width: 600px;
+	max-width: 596px;
+	max-height: 100%;
+	height: 100%;
 	float: left;
+	border-left: 1px solid #d0d0d0;
+	border-right: 1px solid #d0d0d0;
+	position: relative;
+
+	.empty-messages {
+		position: absolute;
+		top: 40px;
+		left: 0px;
+		right: 0px;
+		padding: 65px;
+		font-size: 22px;
+		line-height: 28px;
+
+		p {
+			margin-top: 5px;
+			margin-bottom: 5px;
+		}
+	}
 
 	.message-input {
-		margin-top: 30px;
-		position: relative;
+		position: absolute;
 		width: 100%;
-		height: 120px;
+		height: 140px;
+		bottom: 0px;
+		background: #e5e5e5;
+		border-top: 1px solid #d0d0d0;
 
 		textarea {
 			background: #fff;
 			resize: none;
 			border: none;
 			position: absolute;
-			top: 0px;
-			left: 0px;
-			right: 0px;
-			bottom: 50px;
+			top: 10px;
+			left: 10px;
+			right: 10px;
+			bottom: 60px;
 			background: #fff;
 			.border-radius(0px);
 			.box-sizing(border-box);
@@ -32,8 +54,8 @@
 
 		input {
 			position: absolute;
-			bottom: 0px;
-			right: 0px;
+			bottom: 10px;
+			right: 10px;
 			border: none;
 			background: #2ECC71;
 			color: #fff;
@@ -45,5 +67,31 @@
 				background: #27AE60;
 			}
 		}
+
+		.refresh {
+			position: absolute;
+			bottom: 10px;
+			left: 10px;
+			border: none;
+			background: #e67e22;
+			color: #fff;
+			padding: 14px 20px;
+			text-transform: uppercase;
+			cursor: pointer;
+			text-decoration: none;
+
+			&:hover {
+				background: #d35400;
+			}
+		}
+	}
+
+	.list-messages {
+		position: absolute;
+		top: 0px;
+		bottom: 142px;
+		left: 0px;
+		right: 0px;
+		overflow-y: auto;
 	}
 }

@@ -35,13 +35,13 @@ define([
         className: "list-repos",
         Item: RepoItem,
         defaults: _.defaults({
-            
+            collection: github.repos
         }, yapp.List.prototype.defaults),
 
         /* Constructor */
         initialize: function() {
             ReposList.__super__.initialize.apply(this, arguments);
-            this.collection.reset(github.repos);
+            github.getUserRepos();
             return this;
         },
     }, {

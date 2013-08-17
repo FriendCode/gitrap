@@ -27,9 +27,8 @@ exports.config = {
 
     // Shim
     "shim": {
-        "vendors/github": {
-            deps: ["vendors/base64"],
-            exports: "Github"
+        "vendors/base64": {
+            exports: "Base64"
         },
         "vendors/markdown": {
             exports: "markdown"

@@ -1,118 +1,85 @@
 define([
     "yapp/yapp",
-    "utils/github"
-], function(yapp, github) {
-    var Message = yapp.Model.extend({
+    "vendors/base64",
+    "models/github"
+], function(yapp, Base64, GithubModel) {
+    var Message = GithubModel.extend({
         defaults: {
-        	"ref": "",
-        	"path": "",
-        	"content": "",
-        	"author": {},
-        	"date": null
+        	sha: null,
+            path: null,
+            body: null
         },
 
         /*
-         *	Get repo api
+         *  Constructor
          */
-        _repoApi: function() {
-        	var parts = this.get("ref").split("/");
-            return github.api.getRepo(parts[0], parts[1]);
+        initialize: function() {
+            Message.__super__.initialize.apply(this, arguments);
+            this.repo = this.options.repo;
+            return this;
         },
 
         /*
-         *	Get repo api
+         *  Get url for a message
          */
-        _ref: function() {
-        	var parts = this.get("ref").split("/");
-            return parts[2];
+        url: function() {
+            return this.repo.get("owner.login")+"/"+this.repo.get("name")+"/"+Base64.encode(this.get("path"));
         },
 
         /*
-         *	Post a message in a ref
-         *	@ref
-         *	@title
-         *	@content
+         *  Post a message
          */
-        post: function(ref, title, content) {
-        	var d = new yapp.Deferred();
-        	var parts = ref.split("/");
-        	var repo = github.api.getRepo(parts[0], parts[1]);
-        	path = path || "";
+        post: function(path, content) {
+            var that = this;
+            var date = new Date();
+            var newpath = ""+date.getTime()+"/README.md";
+            newpath = (path != null && path.length > 0) ? path+"/"+newpath : newpath;
 
-        	if (title != null) {
-        		content = "# "+title+"\n\n"+content;
-        	}
-
-        	var path = parts.slice(2).join("/")+"/"+(new Date())+"/README.md";
-        	console.log("create in path ", path, content);
-
-        	repo.write('gitrap', path, content, 'GitRap message', function(err) {
-        		if (err != null) {
-        			d.reject();
-        		} else {
-        			d.resolve();
-        		}
-        	});
-        	return d;
-        },
-
-        /*
-         *	Load messages infos
-         */
-        loadChildren: function(ref) {
-        	ref = ref || this.get("ref");
-        	var d = new yapp.Deferred();
-        	var parts = ref.split("/");
-            var repo = github.api.getRepo(parts[0], parts[1]);
-
-            repo.getSha('gitrap', parts.slice(2).join("/"), function(err, sha) {
-            	repo.getTree(sha, _.bind(function(err, data) {
-	            	console.log("tree ", err, data);
-	                if (err != null) {
-	                	return d.reject(err);
-	                }
-	                return d.resolve(_.map(_.filter(data, function(file) {
-	                	return file.type == "tree"
-	                }), function(file) {
-	                	var m = new Message({}, {
-	                		"ref": parts[0]+"/"+parts[1]+"/"+file.path,
-	                		"path": file.path
-	                	});
-	                	m.loadInfos();
-	                	m.loadContent();
-	                	return m;
-	                }));
-	            }, this));
+            return this.repo.write("gitrap", newpath, content, "GitRap message").done(function() {
+                yapp.Cache.clear();
             });
-        	return d;
         },
 
         /*
-         *	Load content
+         *  Get message body
          */
-        loadContent: function() {
-        	var d = new yapp.Deferred();
-        	var repo = this._repoApi();
-        	repo.read('gitrap', this.get("path")+"/README.md", _.bind(function(err, data) {
-        		this.set("content", data);
-        	}, this));
-
-        	return d;
+        getBody: function(options) {
+            var that = this;
+            var d = new yapp.Deferred();
+            this.repo.getContent("gitrap", this.get("path")+"/README.md", {
+                "raw": true
+            }).then(function(content) {
+                that.set("body", content);
+                d.resolve(content);
+            }, function(err) { d.reject(err); })
+            return d;
         },
 
         /*
-         *	Load content
+         *  Get message infos
          */
-        loadInfos: function() {
-        	var d = new yapp.Deferred();
-        	var repo = this._repoApi();
-        	repo.listCommits("gitrap", this.get("path"), _.bind(function(err, data) {
-        		this.set("author", data[0].author);
-        		d.resolve();
-        	}, this));
+        getInfos: function(options) {
+            var that = this;
+            var d = new yapp.Deferred();
+            this.repo.getCommits({
+                "sha": "gitrap",
+                "path": this.get("path")
+            }, options).then(function(data) {
+                that.set("author", data[0].author);
+                d.resolve(data[0]);
+            }, function(err) { d.reject(err); })
+            return d;
+        },
 
-        	return d;
-        }
+
+        /*
+         *  List messages in this message
+         *  @path : path for the tree
+         */
+        listMessages: function(path, options) {
+            path = path || this.get("path");
+            return that.repo.listMessages(path, options);
+        },
     });
 
     return Message;

@@ -10,22 +10,40 @@
 			margin-top: 6px;
 
 			img {
-				.border-radius(48px);
-				width: 48px;
-				height: 48px;
+				.border-radius(54px);
+				width: 54px;
+				height: 54px;
 			}
 		}
 
 		.message-body {
 			padding: 12px;
 			background: #fff;
-			.border-radius(1px);
-			margin-left: 65px;
-			.box-shadow(0px 1px 4px -1px #888);
+			.border-radius(4px);
+			margin-left: 78px;
 			cursor: pointer;
+			position: relative;
 
 			.author-name {
 				margin-bottom: 10px;
+			}
+
+			&:after {
+				right: 100%;
+				border: solid transparent;
+				content: " ";
+				height: 0;
+				width: 0;
+				position: absolute;
+				pointer-events: none;
+			}
+
+			&:after {
+				border-color: rgba(136, 183, 213, 0);
+				border-right-color: #fff;
+				border-width: 14px;
+				top: 34px;
+				margin-top: -14px;
 			}
 		}
 	}

@@ -10,28 +10,6 @@ define([
     // Collection
     var Messages = yapp.Collection.extend({
         model: Message,
-        defaults: _.defaults({
-            loader: "get",
-            loaderArgs: [],
-            limit: 10
-        }, yapp.Collection.prototype.defaults),
-
-        /*
-         *  Load diffs using repository id and commit sha
-         */
-        get: function(ref) {
-            var that = this;
-            var message = new Message();
-            var d = new yapp.Deferred();
-            if (ref == null) {
-                throw "Empty repoid or sha for getting diffs";
-            }
-
-            return message.loadChildren(ref).done(function(messages) {
-                console.log("messages : ", messages);
-                that.reset(messages);
-            });
-        },
     });
 
     // List Item View
@@ -44,14 +22,22 @@ define([
         templateContext: function() {
             return {
                 object: this.model,
-                content: markdown.toHTML(this.model.get("content"))
+                content: markdown.toHTML(this.model.get("body") || "")
             }
         },
-        finish: function() {
-            return MessageItem.__super__.finish.apply(this, arguments);
+        render: function() {
+            if (this.model.get("body") == null) {
+                this.model.getBody().done(_.bind(this.render, this));
+                return this;
+            }
+            if (this.model.get("author") == null) {
+                this.model.getInfos().done(_.bind(this.render, this));
+                return this;
+            }
+            return MessageItem.__super__.render.apply(this, arguments);
         },
         open: function() {
-            yapp.History.navigate(this.model.get("ref"));
+            yapp.History.navigate(this.model.url());
         }
     });
 
@@ -61,13 +47,8 @@ define([
         Collection: Messages,
         Item: MessageItem,
         defaults: _.defaults({
-            
+            loadAtInit: false
         }, yapp.List.prototype.defaults),
-
-        loadByRef: function(ref) {
-            this.collection.options.loaderArgs = [ref];
-            return this.refresh();
-        }
     }, {
         Collection: Messages,
         Item: MessageItem
