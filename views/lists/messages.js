@@ -37,12 +37,16 @@ define([
             return MessageItem.__super__.render.apply(this, arguments);
         },
         open: function(e) {
-            if (e != null) e.preventDefault();
+            if (e != null) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
             var Conversations = require("views/conversation");
             var conversation = new Conversations({
                 "repo": this.model.repo,
                 "path": this.model.get("path")
             });
+            this.$(".sub-conversation").empty();
             conversation.$el.appendTo(this.$(".sub-conversation"));
             conversation.render();
         }

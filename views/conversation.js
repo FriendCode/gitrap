@@ -31,11 +31,6 @@ define([
         },
         finish: function() {
             this.refreshMessages();
-            this.components.messages.on("change", _.bind(function() {
-                var n = this.components.messages.totalCount();
-                this.components.messages.$el.toggle(n > 0);
-                this.$(".empty-messages").toggle(n==0);
-            }, this));
             return ConversationView.__super__.finish.apply(this, arguments);
         },
 
@@ -56,7 +51,10 @@ define([
 
         /* (event) Post message */
         postMessage: function(e) {
-            if (e != null) e.preventDefault();
+            if (e != null) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
             var content = this.$(".message-input textarea").val();
 
             var message = new Message({repo: this.repo});

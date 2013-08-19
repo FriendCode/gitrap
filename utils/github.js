@@ -49,13 +49,13 @@ define([
 		    }
 
 
-		    if (options.cache) {
+		    /*if (options.cache) {
 		    	var data = this.cache.get(url);
 		    	if (data != null) {
 		    		d.resolve(data);
 		    		return d;
 		    	}
-		    }
+		    }*/
 		    
 		    var xhr = new XMLHttpRequest();
 		    if (!options.raw) {xhr.dataType = "json";}
