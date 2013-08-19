@@ -1,16 +1,17 @@
 .list-messages {
 	list-style: none;
+	padding-left: 25px;
 
 	.message-item {
 		min-height: 72px;
-		margin: 25px;
+		margin: 25px 0px;
 
 		.message-author {
 			float: left;
 			margin-top: 6px;
 
 			img {
-				.border-radius(54px);
+				.border-radius(4px);
 				width: 54px;
 				height: 54px;
 			}
@@ -21,11 +22,19 @@
 			background: #fff;
 			.border-radius(4px);
 			margin-left: 78px;
-			cursor: pointer;
 			position: relative;
 
-			.author-name {
+			.message-infos {
+				.author-name {
+					color: #3498db;
+					text-decoration: none;
+					margin-right: 20px;
+				}
+			}
+
+			.content {
 				margin-bottom: 10px;
+				margin-top: 10px;
 			}
 
 			&:after {
@@ -45,6 +54,11 @@
 				top: 34px;
 				margin-top: -14px;
 			}
+		}
+
+		.sub-conversation {
+			margin-left: 78px;
+			border-left: 5px solid #fff;
 		}
 	}
 }

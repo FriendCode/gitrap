@@ -17,7 +17,7 @@ define([
         className: "message-item",
         template: "lists/message.html",
         events: {
-            "click .message-body": "open"
+            "click .message-reply": "open"
         },
         templateContext: function() {
             return {
@@ -36,8 +36,15 @@ define([
             }
             return MessageItem.__super__.render.apply(this, arguments);
         },
-        open: function() {
-            yapp.History.navigate(this.model.url());
+        open: function(e) {
+            if (e != null) e.preventDefault();
+            var Conversations = require("views/conversation");
+            var conversation = new Conversations({
+                "repo": this.model.repo,
+                "path": this.model.get("path")
+            });
+            conversation.$el.appendTo(this.$(".sub-conversation"));
+            conversation.render();
         }
     });
 

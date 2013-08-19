@@ -27,8 +27,7 @@ require([
             "icon": yapp.Urls.static("images/favicon.png")
         },
         routes: {
-            ":owner/:name": "changeConversation",
-            ":owner/:name/:sha": "changeConversation"
+            ":owner/:name": "changeConversation"
         },
         events: {
             "keyup .main-repos .search-query": "searchRepos",
@@ -84,7 +83,7 @@ require([
 
                     conv = new ConversationView({
                         "repo": that.repo,
-                        "path": that.path
+                        "path": null
                     });
                     conv.render();
                     conv.$el.appendTo(that.$(".main-conversations"));
