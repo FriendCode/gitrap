@@ -31,7 +31,8 @@ require([
             ":owner/:name/:sha": "changeConversation"
         },
         events: {
-            "keyup .main-repos .search-query": "searchRepos"
+            "keyup .main-repos .search-query": "searchRepos",
+            "click .action-init-repo": "initRepo"
         },
 
         /* Constructor */
@@ -39,8 +40,6 @@ require([
             Application.__super__.initialize.apply(this, arguments);
             github.on("logged", this.render, this);
             this.repo = null;
-            this.path = null;
-            this.conversations = [];
             this.conversationArgs = [];
             return this;
         },
@@ -68,55 +67,50 @@ require([
         },
 
         /* (event) Change current conversation */
-        changeConversation: function(owner, name, path) {
+        changeConversation: function(owner, name) {
             var that, conv, i, curl;
             that = this;
             this.conversationArgs = _.values(arguments);
             
             if (!github.logged) return this;
 
-            if (this.repo != null
-            && (this.repo.get("owner.login") != owner
-            || this.repo.get("name") != name)) {
-                this.clearConversations();
-            }
-
             curl = owner+"/"+name;
-            if (path != null) curl = curl+"/"+path;
 
-            this.path = path == null ? "" : Base64.decode(path);
             this.repo = new github.Repo();
             this.repo.load(owner, name).done(function() {
-                return that.repo.checkBranch("gitrap");
-            }).then(function() {
-                i = that.path.length == 0 ? 0 : _.size(that.path.split("/"));
-                that.clearConversations(i);
+                that.repo.checkBranch("gitrap").then(function() {
+                    that.$el.removeClass("mode-init-repo");
+                    that.$(".main-conversations").empty();
 
-                conv = new ConversationView({
-                    "repo": that.repo,
-                    "path": that.path
-                });
-                conv.render();
-                conv.$el.appendTo(that.$(".main-conversations"));
-                that.conversations[i] = conv;
+                    conv = new ConversationView({
+                        "repo": that.repo,
+                        "path": that.path
+                    });
+                    conv.render();
+                    conv.$el.appendTo(that.$(".main-conversations"));
 
-                that.$("*[data-gitrap]").each(function() {
-                    $(this).toggleClass("active", curl.indexOf($(this).data("gitrap")) === 0);
+                    that.$("*[data-gitrap]").each(function() {
+                        $(this).toggleClass("active", curl.indexOf($(this).data("gitrap")) === 0);
+                    });
+                }, function() {
+                    that.$el.addClass("mode-init-repo");
                 });
             });
             
             return this;
         },
 
-        /* Clear conversations */
-        clearConversations: function(n) {
-            var maxConvs = _.max([1, Math.floor(this.$(".main-conversations").width()/600)]);
-            _.each(this.conversations, function(conversation, i) {
-                if (n != null && i < n && i < maxConvs && i != n) return;
-                conversation.remove();
-                this.conversations.splice(i, 1);
-            }, this);
-        },
+        /* Init repo */
+        initRepo: function(e) {
+            var that = this;
+            if (e != null) e.preventDefault();
+            yapp.Cache.clear();
+            this.repo.checkBranch("gitrap", true, {
+                cache: false
+            }).done(function() {
+                that.changeConversation.apply(that, that.conversationArgs);
+            });
+        }
     });
 
     var app = new Application();

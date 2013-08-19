@@ -9,6 +9,11 @@
 				<a href="<%- user.get("html_url") %>" target="_blank" class="action-link-user"><%- user.get("name") %></a>
 			</div>
 			<div class="main-conversations"></div>
+			<div class="main-create-conversation">
+				<p>Do you want to create a GitRap conversations storage on this repository ?</p>
+				<p class="help">It will create a new empty branch named "gitrap".</p>
+				<a href="#" class="action-init-repo">Create GitRap branch</a>
+			</div>
 		<% } %>
 	</div>
 	<div class="main-footer">

@@ -79,6 +79,48 @@ define([
         },
 
         /*
+         *  Create a new commit
+         *  @content : Blob content
+         *  @encoding : encoding for content (base utf8)
+         */
+        createBlob: function(content, encoding, options) {
+            encoding = encoding || "utf-8";
+            return this.api().request("POST", this._path()+"/git/blobs", {
+                "content": content,
+                "encoding": encoding
+            }, _.extend({
+                cache: false
+            }, options || {}));
+        },
+
+        /*
+         *  Create a new tree
+         *  @args.base_tree : (optional) String of the SHA1 of the tree you want to update with new data.
+         *  @args.tree : Array of Hash objects (of path, mode, type and sha) specifying a tree structure
+         */
+        createTree: function(args, options) {
+            return this.api().request("POST", this._path()+"/git/trees", args, _.extend({
+                cache: false
+            }, options || {}));
+        },
+
+        /*
+         *  Create a new commit
+         *  @message : String of the commit message
+         *  @tree : String of the SHA of the tree object this commit points to
+         *  @parents : Array of the SHAs of the commits that were the parents of this commit.
+         */
+        createCommit: function(message, tree, parents, options) {
+            return this.api().request("POST", this._path()+"/git/commits", {
+                "message": message,
+                "tree": tree,
+                "parents": parents
+            }, _.extend({
+                cache: false
+            }, options || {}));
+        },
+
+        /*
          *  Create branche
          *  @name : name of the branc (ex: dev)
          *  @base : base ref (ex: heads/dev)
@@ -86,10 +128,27 @@ define([
         createBranche: function(name, base, options) {
             var that = this;
             var d = new yapp.Deferred();
-            base = base || 'heads/master';
-            this.getRef(base, options).done(function (sha) {
-                d.resolve(that.createRef("refs/heads/"+name, sha.object.sha));
-            }, function(err) { d.reject(err); })
+
+            if (base == null) {
+                this.createTree({
+                    "tree": [{
+                      "path": "README.md",
+                      "mode": "100644",
+                      "type": "blob",
+                      "content": "GitRap base branch"
+                    }]
+                }).done(function(tree) {
+                    console.log("create tree ", tree);
+                    return that.createCommit("Create base for GitRap", tree.sha, []);
+                }).then(function(commit) {
+                    console.log("create commit ", commit);
+                    d.resolve(that.createRef("refs/heads/"+name, commit.sha));
+                }, function(err) { d.reject(err); })
+            } else {
+                this.getRef(base, options).done(function (sha) {
+                    d.resolve(that.createRef("refs/heads/"+name, sha.object.sha));
+                }, function(err) { d.reject(err); });
+            }
             return d;
         },
 
@@ -97,12 +156,13 @@ define([
          *  Create if not exists a branch
          *  @name : branche name to check
          */
-        checkBranch: function(name, options) {
+        checkBranch: function(name, create, options) {
             var that = this;
             var d = new yapp.Deferred();
             this.listBranches(options).done(function(branches) {
                 if (_.contains(branches, name)) return d.resolve();
-                d.resolve(that.createBranche(name));
+                if (create) return d.resolve(that.createBranche(name));
+                return d.reject();
             }, function(err) { d.reject(err); });
             return d;
         },

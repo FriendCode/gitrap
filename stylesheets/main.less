@@ -101,5 +101,54 @@ body {
 			bottom: 0px;
 			right: 0px;
 		}
+
+		.main-create-conversation {
+			display: none;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			height: 140px;
+			margin-top: -120px;
+			width: 500px;
+			margin-left: -148px;
+			background: #fff;
+			padding: 20px;
+			font-size: 20px;
+			line-height: 28px;
+
+			.help {
+				color: #888;
+				font-size: 16px;
+				line-height: 28px;
+			}
+
+			.action-init-repo {
+				position: absolute;
+				bottom: 20px;
+				left: 20px;
+				right: 20px;
+				overflow: hidden;
+				background: #2ecc71;
+				color: #fff;
+				line-height: 35px;
+				padding: 6px 8px;
+				text-decoration: none;
+				text-align: center;
+
+				&:hover {
+					background: #27ae60;
+					color: #fff;
+				}
+			}
+		}
+	}
+}
+
+.mode-init-repo {
+	.main-conversations {
+		display: none !important;
+	}
+	.main-create-conversation {
+		display: block !important;
 	}
 }
