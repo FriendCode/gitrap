@@ -25488,7 +25488,7 @@ Logger, Requests, Urls, Storage, Cache, Template, Ressources, Deferred, Queue, I
         }
     }
 });
-define('yapp/args',[],function() { return {"revision":1377880233255,"baseUrl":"/gitrap/"}; });
+define('yapp/args',[],function() { return {"revision":1377882417670,"baseUrl":"/gitrap/"}; });
 // This code was written by Tyler Akins and has been placed in the
 // public domain.  It would be nice if you left this header intact.
 // Base64 code from Tyler Akins -- http://rumkin.com
@@ -25663,7 +25663,6 @@ define('models/message',[
                 "sha": "gitrap",
                 "path": this.get("path")
             }, options).then(function(data) {
-                console.log(data);
                 that.set("author", data[0].author);
                 that.set("date", data[0].commit.author.date);
                 that.set("link", "https://github.com/"+that.repo.get("owner.login")+"/"+that.repo.get("name")+"/tree/gitrap/"+that.get("path"));
@@ -26015,15 +26014,6 @@ define('utils/github',[
 		    	if (err) return d.reject(err);
 		    	return d.resolve(data);
 		    }
-
-
-		    /*if (options.cache) {
-		    	var data = this.cache.get(url);
-		    	if (data != null) {
-		    		d.resolve(data);
-		    		return d;
-		    	}
-		    }*/
 		    
 		    var xhr = new XMLHttpRequest();
 		    if (!options.raw) {xhr.dataType = "json";}
@@ -26091,7 +26081,7 @@ define('utils/github',[
 		getRepos: function(user, options) {
 			user = _.isString(user) ? user : user.get("login");
 			var d = new yapp.Deferred();
-			this.request("GET", "users/"+user+"/repos", null, options).then(function(data) {
+			this.request("GET", "users/"+user+"/repos?type=all", null, options).then(function(data) {
 				d.resolve(_.map(data, function(repo) {
 					return new Repo({}, repo);
 				}));
