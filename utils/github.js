@@ -47,15 +47,6 @@ define([
 		    	if (err) return d.reject(err);
 		    	return d.resolve(data);
 		    }
-
-
-		    /*if (options.cache) {
-		    	var data = this.cache.get(url);
-		    	if (data != null) {
-		    		d.resolve(data);
-		    		return d;
-		    	}
-		    }*/
 		    
 		    var xhr = new XMLHttpRequest();
 		    if (!options.raw) {xhr.dataType = "json";}
@@ -123,7 +114,7 @@ define([
 		getRepos: function(user, options) {
 			user = _.isString(user) ? user : user.get("login");
 			var d = new yapp.Deferred();
-			this.request("GET", "users/"+user+"/repos", null, options).then(function(data) {
+			this.request("GET", "users/"+user+"/repos?type=all", null, options).then(function(data) {
 				d.resolve(_.map(data, function(repo) {
 					return new Repo({}, repo);
 				}));
