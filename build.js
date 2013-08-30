@@ -3,6 +3,7 @@ var path = require("path");
 exports.config = {
     // Base directory for the application
     "base": __dirname,
+    "baseUrl": "/gitrap/",
 
     // Application name
     "name": "Gitrap",
