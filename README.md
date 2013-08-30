@@ -1,13 +1,16 @@
 [![Screen](https://raw.github.com/FriendCode/gitrap/master/ressources/images/logo.png)](https://raw.github.com/FriendCode/gitrap/master/ressources/images/logo.png)
 
-Powerful discourse system running on top of Git/GitHub.
+Distributed Git based Forums.
 ======
+
+> gitrap is for forums what gh-pages is for websites
+
 
 [![Code Now](https://friendco.de/widgets/image/codenow?url=https%3A%2F%2Fgithub.com%2FFriendCode%2Fgitrap.git)](https://friendco.de/widgets/url/codenow?url=https%3A%2F%2Fgithub.com%2FFriendCode%2Fgitrap.git)
 
-GitRap allows you to store complete conversations with your collaborators into your GIT repository (into a specific branch named "gitrap").
+GitRap allows you to store conversations with your collaborators in your GIT repositories (in a specific branch named "gitrap").
 
-This GitRap client runs in your browser (no backend needed) and use GitHub API to read/write data into the branch "gitrap" or yours repositories.
+This GitRap client runs entirely in your browser (no backend needed) and uses GitHub's API to read/write data to and from the branch "gitrap" of your repositories.
 The concept of GitRap is not related to GitHub and can be used with any GIT repositories but not in this client-side application.
 
 [![Screen Login](https://raw.github.com/FriendCode/gitrap/master/screens/login.png)](https://raw.github.com/FriendCode/gitrap/master/screens/login.png)
@@ -20,7 +23,7 @@ The concept of GitRap is not related to GitHub and can be used with any GIT repo
 
 ### FileSystem layout
 
-It's really simple : GitRap use a separated branch named "gitrap" in the source repository to store all the conversations as trees :
+It's really simple : GitRap uses a separate branch named "gitrap" in the source repository to store all the conversations as trees
 
     [branch gitrap] /
         1377878509004/
@@ -38,11 +41,11 @@ It's really simple : GitRap use a separated branch named "gitrap" in the source 
 
 [![Screen Design](https://raw.github.com/FriendCode/gitrap/master/screens/design.png)](https://raw.github.com/FriendCode/gitrap/master/screens/design.png)
 
-## Installation
+## Install
 
-This is a simple client-side application build using [yapp.js](https://github.com/FriendCode/yapp.js), you can use it at : [friendcode.github.io/gitrap/](https://github.com/FriendCode/gitrap).
+This is a simple client-side application built using [yapp.js](https://github.com/FriendCode/yapp.js), you can use it at : [friendcode.github.io/gitrap/](https://github.com/FriendCode/gitrap).
 
-For installing on your machine and building the application :
+Install and build on your local machine :
 
     git clone https://github.com/FriendCode/gitrap.git
     cd gitrap
