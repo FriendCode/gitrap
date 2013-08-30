@@ -25488,7 +25488,7 @@ Logger, Requests, Urls, Storage, Cache, Template, Ressources, Deferred, Queue, I
         }
     }
 });
-define('yapp/args',[],function() { return {"revision":1377879648221,"baseUrl":"/"}; });
+define('yapp/args',[],function() { return {"revision":1377880233255,"baseUrl":"/gitrap/"}; });
 // This code was written by Tyler Akins and has been placed in the
 // public domain.  It would be nice if you left this header intact.
 // Base64 code from Tyler Akins -- http://rumkin.com
