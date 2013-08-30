@@ -13,7 +13,7 @@ GitRap allows you to store conversations with your collaborators in your GIT rep
 This GitRap client runs entirely in your browser (no backend needed) and uses GitHub's API to read/write data to and from the branch "gitrap" of your repositories.
 The concept of GitRap is not related to GitHub and can be used with any GIT repositories but not in this client-side application.
 
-Try it: [friendcode.github.io/gitrap/](https://github.com/FriendCode/gitrap)
+Try it: [friendcode.github.io/gitrap/](https://friendcode.github.io/gitrap/)
 
 [![Screen Login](https://raw.github.com/FriendCode/gitrap/master/screens/login.png)](https://raw.github.com/FriendCode/gitrap/master/screens/login.png)
 [![Screen Login](https://raw.github.com/FriendCode/gitrap/master/screens/start.png)](https://raw.github.com/FriendCode/gitrap/master/screens/start.png)
