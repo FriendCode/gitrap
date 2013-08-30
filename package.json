@@ -1,7 +1,7 @@
 {
     "author": "Samy Pesse",
     "name": "Gitrap",
-    "description": "Powerfull conversation system based on Git (and Github).",
+    "description": "Git based forums.",
     "version": "0.0.1",
     "dependencies": {
         "yapp": "git://github.com/FriendCode/yapp.js#master"
@@ -13,7 +13,7 @@
     "licenses" : [
         {
             "type" : "Apache",
-            "url" : "https://github.com/SamyPesse/gitrap/blob/master/LICENSE"
+            "url" : "https://github.com/FriendCode/gitrap/blob/master/LICENSE"
         }
     ]
 }
