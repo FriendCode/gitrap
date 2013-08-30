@@ -18,6 +18,8 @@ The concept of GitRap is not related to GitHub and can be used with any GIT repo
 
 ## How does it work ?
 
+### FileSystem layout
+
 It's really simple : GitRap use a separated branch named "gitrap" in the source repository to store all the conversations as trees :
 
     [branch gitrap] /
@@ -32,6 +34,9 @@ It's really simple : GitRap use a separated branch named "gitrap" in the source 
         1377878509104/
             README.md   : content of a second message
 
+### Overall Design
+
+[![Screen Design](https://raw.github.com/FriendCode/gitrap/master/screens/design.png)](https://raw.github.com/FriendCode/gitrap/master/screens/design.png)
 
 ## Installation
 
@@ -43,7 +48,6 @@ For installing on your machine and building the application :
     cd gitrap
     npm install .
     make
-
 
 ## Todo :
 
