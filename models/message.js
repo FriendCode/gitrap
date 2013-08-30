@@ -65,7 +65,9 @@ define([
                 "sha": "gitrap",
                 "path": this.get("path")
             }, options).then(function(data) {
+                console.log(data);
                 that.set("author", data[0].author);
+                that.set("date", data[0].commit.author.date);
                 that.set("link", "https://github.com/"+that.repo.get("owner.login")+"/"+that.repo.get("name")+"/tree/gitrap/"+that.get("path"));
                 d.resolve(data[0]);
             }, function(err) { d.reject(err); })

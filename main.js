@@ -9,10 +9,11 @@ require([
     "models/message",
     "utils/github",
     "views/conversation",
+    "views/repoinfos",
 
     "views/views",
     "ressources/ressources"
-], function(_, yapp, args, Base64, Repo, Message, github, ConversationView) {
+], function(_, yapp, args, Base64, Repo, Message, github, ConversationView, RepoInfosView) {
     // Configure yapp
     yapp.configure(args);
 
@@ -30,7 +31,6 @@ require([
             ":owner/:name": "changeConversation"
         },
         events: {
-            "keyup .main-repos .search-query": "searchRepos",
             "click .action-init-repo": "initRepo"
         },
 
@@ -59,15 +59,9 @@ require([
             }
         },
 
-        /* (event) Search repos */
-        searchRepos: function(e) {
-            var q = $(e.currentTarget).val();
-            this.components.repos.search(q);
-        },
-
         /* (event) Change current conversation */
         changeConversation: function(owner, name) {
-            var that, conv, i, curl;
+            var that, conv, i, curl, repoInfos;
             that = this;
             this.conversationArgs = _.values(arguments);
             
@@ -77,9 +71,19 @@ require([
 
             this.repo = new github.Repo();
             this.repo.load(owner, name).done(function() {
+                that.$("*[data-gitrap]").each(function() {
+                    $(this).toggleClass("active", curl.indexOf($(this).data("gitrap")) === 0);
+                });
+            
                 that.repo.checkBranch("gitrap").then(function() {
                     that.$el.removeClass("mode-init-repo");
                     that.$(".main-conversations").empty();
+
+                    repoInfos = new RepoInfosView({
+                        "repo": that.repo
+                    });
+                    repoInfos.render();
+                    repoInfos.$el.appendTo(that.$(".main-repoinfos"));
 
                     conv = new ConversationView({
                         "repo": that.repo,
@@ -87,10 +91,6 @@ require([
                     });
                     conv.render();
                     conv.$el.appendTo(that.$(".main-conversations"));
-
-                    that.$("*[data-gitrap]").each(function() {
-                        $(this).toggleClass("active", curl.indexOf($(this).data("gitrap")) === 0);
-                    });
                 }, function() {
                     that.$el.addClass("mode-init-repo");
                 });

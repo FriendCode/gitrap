@@ -1,0 +1,7 @@
+<a href="<%- repo.get("html_url") %>/settings/collaboration" target="_blank" class="action-add">Add a new collaborator</a>
+
+<div class="collaborators">
+<% _.each(collaborators, function(user) { %>
+	<a class="collaborator" href="<%- user.get("html_url") %>" target="_blank"><img src="<%- user.get("avatar_url") %>" /></a>
+<% }); %>
+</div>

@@ -4,10 +4,11 @@
 			<%= view.component("login", {}, "login") %>
 		<% } else { %>
 			<div class="main-repos">
-				<input class="search-query" placeholder="Search Repos" />
+				<img class="logo" src="<%- yapp.urls.static("images/favicon.png") %>" />
 				<%= view.component("list.repos", {}, "repos") %>
 				<a href="<%- user.get("html_url") %>" target="_blank" class="action-link-user"><%- user.get("name") %></a>
 			</div>
+			<div class="main-repoinfos"></div>
 			<div class="main-conversations"></div>
 			<div class="main-create-conversation">
 				<p>Do you want to create a GitRap conversations storage on this repository ?</p>

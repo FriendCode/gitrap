@@ -20,6 +20,7 @@ body {
 @import "conversation.less";
 @import "footer.less";
 @import "login.less";
+@import "repoinfos.less";
 
 .main {
 	position: absolute;
@@ -47,26 +48,18 @@ body {
 			background: #3498db;
 			.border-radius(0px);
 
-			.search-query {
-				position: absolute;
-				top: 0px;
-				left: 0px;
-				width: 100%;
-				background: #fff;
-				.border-radius(0px);
-				.box-sizing(border-box);
-				padding: 12px 12px;
-				margin: 0px;
-				.box-shadow(none);
-				-webkit-appearance: none;
-				outline: none;
-				border: none;
+			.logo {
+				width: 120px;
+				margin-left: auto;
+				margin-right: auto;
+				display: block;
+				opacity: 0.15;
 			}
 
 			.list-repos {
 				overflow-y: auto;
 				position: absolute;
-				top: 37px;
+				top: 130px;
 				bottom: 0px;
 				left: 0px;
 				right: 0px;
@@ -96,13 +89,26 @@ body {
 		/* Conversations */
 		.main-conversations {
 			position: absolute;
-			top: 0px;
+			top: 50px;
 			left: 244px;
 			bottom: 0px;
 			right: 0px;
 			overflow-y: auto;
+			padding: 10px 50px;
 		}
 
+		/* Repos infos */
+		.main-repoinfos {
+			position: absolute;
+			top: 0px;
+			left: 244px;
+			height: 50px;
+			right: 0px;
+			overflow: hidden;
+			background: #ddd;
+		}
+
+		/* Modal to create gitrap */
 		.main-create-conversation {
 			display: none;
 			position: absolute;
@@ -146,7 +152,7 @@ body {
 }
 
 .mode-init-repo {
-	.main-conversations {
+	.main-conversations, .main-repoinfos {
 		display: none !important;
 	}
 	.main-create-conversation {

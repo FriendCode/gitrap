@@ -1,8 +1,9 @@
 define([
     "yapp/yapp",
     "models/github",
-    "models/message"
-], function(yapp, GithubModel, Message) {
+    "models/message",
+    "models/user"
+], function(yapp, GithubModel, Message, User) {
     var Repo = GithubModel.extend({
         defaults: {
 
@@ -246,6 +247,19 @@ define([
                     });
                 });
                 d.resolve(messages);
+            }, function(err) { d.reject(err); });
+            return d;
+        },
+
+        /*
+         *  List collaborators
+         */
+        listCollaborators: function(options) {
+            var d = new yapp.Deferred();
+            this.api().request("GET", this._path()+"/collaborators", null, _.extend({
+                cache: true
+            }, options || {})).then(function(collaborators) {
+                d.resolve(_.map(collaborators, function(collaborator) { return new User({}, collaborator); }));
             }, function(err) { d.reject(err); });
             return d;
         },

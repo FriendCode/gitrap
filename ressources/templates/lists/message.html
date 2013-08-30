@@ -4,7 +4,7 @@
 <div class="message-body">
 	<p class="message-infos">
 		<a class="author-name" href="<%- object.get("author.html_url") %>" target="_blank"><%- object.get("author.login") %></a>
-		 | <a class="message-link" href="<%- object.get("link") %>" target="_blank">link</a>
+		<span class="message-date"><%- object.get("date") %></span> | <a class="message-link" href="<%- object.get("link") %>" target="_blank">link</a>
 	</p>
 	<div class="content"><%= content %></div>
 	<p><a href="#" class="message-reply">Reply</a></p>
