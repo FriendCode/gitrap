@@ -4,7 +4,7 @@
     "description": "Git based forums.",
     "version": "0.0.1",
     "dependencies": {
-        "yapp": "git://github.com/FriendCode/yapp.js#master"
+        "yapp": "0.1.1"
     },
     "engines": {
         "node": "0.8.x",

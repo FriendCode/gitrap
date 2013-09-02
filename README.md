@@ -1,4 +1,4 @@
-[![Screen](https://raw.github.com/FriendCode/gitrap/master/ressources/images/logo.png)](https://raw.github.com/FriendCode/gitrap/master/ressources/images/logo.png)
+[![Screen](https://raw.github.com/FriendCode/gitrap/master/resources/images/logo.png)](https://raw.github.com/FriendCode/gitrap/master/resources/images/logo.png)
 
 Distributed Git based Forums.
 ======

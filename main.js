@@ -12,7 +12,7 @@ require([
     "views/repoinfos",
 
     "views/views",
-    "ressources/ressources"
+    "resources/resources"
 ], function(_, yapp, args, Base64, Repo, Message, github, ConversationView, RepoInfosView) {
     // Configure yapp
     yapp.configure(args);
