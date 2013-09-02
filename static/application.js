@@ -12161,8 +12161,8 @@ define('yapp/configs',['require'],function(args) {
         // Static files directory (relative to baseUrl)
         "staticDirectory": "static",
 
-        // Configurations for ressources loading
-        "ressources": {
+        // Configurations for resources loading
+        "resources": {
             /* Default loader */
             "loader": "http"
         },
@@ -23076,7 +23076,7 @@ define('yapp/utils/requests',[
     });
     return Requests;
 });
-define('yapp/utils/ressources',[
+define('yapp/utils/resources',[
     "Underscore",
     "yapp/configs",
     "yapp/utils/logger",
@@ -23086,10 +23086,10 @@ define('yapp/utils/ressources',[
     "yapp/utils/deferred",
 ], function(_, configs, Logger, Cache, Requests, Urls, Deferred) {
 
-    var logging = Logger.addNamespace("ressources");
-    var cache = Cache.namespace("ressources");
+    var logging = Logger.addNamespace("resources");
+    var cache = Cache.namespace("resources");
 
-    var Ressources = {
+    var Resources = {
         loaders: {},
         namespaces: {},
 
@@ -23098,15 +23098,15 @@ define('yapp/utils/ressources',[
          */
         load: function(namespace, ressource, args, options) {
             var d = new Deferred();
-            var namespace_configs = _.extend({}, Ressources.namespaces[namespace] || {}, options || {});
-            var loader = namespace_configs.loader || configs.ressources.loader;
+            var namespace_configs = _.extend({}, Resources.namespaces[namespace] || {}, options || {});
+            var loader = namespace_configs.loader || configs.resources.loader;
             
-            if (Ressources.loaders[loader] == null) {
+            if (Resources.loaders[loader] == null) {
                 logging.error("Loader doesn't exists ", loader, "namespace=",namespace);
                 d.reject();
                 return d;
             }
-            Ressources.loaders[loader](ressource, d, args, namespace_configs);
+            Resources.loaders[loader](ressource, d, args, namespace_configs);
             return d;
         },
 
@@ -23116,7 +23116,7 @@ define('yapp/utils/ressources',[
          *  @loader : loader function
          */
         addLoader: function(name, loader) {
-            Ressources.loaders[name] = loader;
+            Resources.loaders[name] = loader;
         },
 
         /*
@@ -23127,17 +23127,17 @@ define('yapp/utils/ressources',[
         addNamespace: function(name, config) {
             config = config || {};
             config = _.defaults(config, {
-                loader: configs.ressources.loader
+                loader: configs.resources.loader
             });
             config = _.extend(config, {
                 namespace: name
             });
-            Ressources.namespaces[name] = config;
+            Resources.namespaces[name] = config;
         }
     };
 
     // Require loader
-    Ressources.addLoader("require", function(ressourcename, callback, args, config) {  
+    Resources.addLoader("require", function(ressourcename, callback, args, config) {  
         _.defaults(config, {
             mode: "text",
             base: "",
@@ -23156,7 +23156,7 @@ define('yapp/utils/ressources',[
     });
 
     // HTTP loader
-    Ressources.addLoader("http", function(ressourcename, callback, args, config) {
+    Resources.addLoader("http", function(ressourcename, callback, args, config) {
         _.defaults(config, {
             base: "./",
             extension: ""
@@ -23178,7 +23178,7 @@ define('yapp/utils/ressources',[
         });
     });
 
-    return Ressources;
+    return Resources;
 });
 define('yapp/utils/i18n',[
     "jQuery",
@@ -23186,9 +23186,9 @@ define('yapp/utils/i18n',[
     "yapp/configs",
     "yapp/utils/urls",
     "yapp/utils/logger",
-    "yapp/utils/ressources",
+    "yapp/utils/resources",
     "yapp/utils/deferred"
-], function($, _, configs, Urls, Logger, Ressources, Deferred) {
+], function($, _, configs, Urls, Logger, Resources, Deferred) {
     var logging = Logger.addNamespace("i18n");
     var I18n = {};
 
@@ -23240,7 +23240,7 @@ define('yapp/utils/i18n',[
             });
             return Deferred.when.apply(Deferred, d);
         }
-        return Ressources.load("i18n", lng).then(function(content) {
+        return Resources.load("i18n", lng).then(function(content) {
             // use "eval" here because content is from a trusted source
             if (_.isString(content)) content = eval('(' + content + ')');//JSON.parse(content);
             I18n.translations[lng] = content;
@@ -23316,9 +23316,9 @@ define('yapp/utils/template',[
     "yapp/core/class",
     "yapp/utils/logger",
     "yapp/utils/urls",
-    "yapp/utils/ressources",
+    "yapp/utils/resources",
     "yapp/utils/i18n"
-], function(_, configs, Class, Logger, Urls, Ressources, I18n) {
+], function(_, configs, Class, Logger, Urls, Resources, I18n) {
     var Template = Class.extend({
         defaults: {
             /* Template id */
@@ -23406,7 +23406,7 @@ define('yapp/utils/template',[
         load: function(template) {
             var self = this;
             this.template = template || this.template;
-            Ressources.load("templates", this.template).then(function(content) {
+            Resources.load("templates", this.template).then(function(content) {
                 self.setContent(content);
                 self.trigger("loaded");
             }, function() {
@@ -25436,7 +25436,7 @@ define('yapp/yapp',[
     "yapp/utils/storage",
     "yapp/utils/cache",
     "yapp/utils/template",
-    "yapp/utils/ressources",
+    "yapp/utils/resources",
     "yapp/utils/deferred",
     "yapp/utils/queue",
     "yapp/utils/i18n",
@@ -25445,7 +25445,7 @@ define('yapp/yapp',[
     "yapp/vendors/underscore-more"
 ], function(shims, configs, 
 Class, View, Application, Head, History, Router, Model, Collection, ListView,
-Logger, Requests, Urls, Storage, Cache, Template, Ressources, Deferred, Queue, I18n, views) {    
+Logger, Requests, Urls, Storage, Cache, Template, Resources, Deferred, Queue, I18n, views) {    
     return {
         configs: configs,
         Class: Class,
@@ -25464,7 +25464,7 @@ Logger, Requests, Urls, Storage, Cache, Template, Ressources, Deferred, Queue, I
         Requests: Requests,
         Urls: Urls,
         Template: Template,
-        Ressources: Ressources,
+        Resources: Resources,
         Deferred: Deferred,
         Queue: Queue,
         I18n: I18n,
@@ -25488,7 +25488,7 @@ Logger, Requests, Urls, Storage, Cache, Template, Ressources, Deferred, Queue, I
         }
     }
 });
-define('yapp/args',[],function() { return {"revision":1377883515972,"baseUrl":"/gitrap/"}; });
+define('yapp/args',[],function() { return {"revision":1378100566791,"baseUrl":"/gitrap/"}; });
 // This code was written by Tyler Akins and has been placed in the
 // public domain.  It would be nice if you left this header intact.
 // Base64 code from Tyler Akins -- http://rumkin.com
@@ -28121,11 +28121,11 @@ define('views/views',[
 ], function() {
 	return arguments;
 });
-define('ressources/ressources',[
+define('resources/resources',[
     "yapp/yapp"
 ], function(yapp) {
 
-    yapp.Ressources.addNamespace("templates", {
+    yapp.Resources.addNamespace("templates", {
         loader: "http",
         base: "templates"
     });
@@ -28146,7 +28146,7 @@ require([
     "views/repoinfos",
 
     "views/views",
-    "ressources/ressources"
+    "resources/resources"
 ], function(_, yapp, args, Base64, Repo, Message, github, ConversationView, RepoInfosView) {
     // Configure yapp
     yapp.configure(args);
