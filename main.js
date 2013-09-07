@@ -1,7 +1,7 @@
 require([
     "Underscore",
-    "yapp/yapp",
-    "yapp/args",
+    "hr/hr",
+    "hr/args",
 
     "vendors/base64",
 
@@ -13,19 +13,19 @@ require([
 
     "views/views",
     "resources/resources"
-], function(_, yapp, args, Base64, Repo, Message, github, ConversationView, RepoInfosView) {
-    // Configure yapp
-    yapp.configure(args);
+], function(_, hr, args, Base64, Repo, Message, github, ConversationView, RepoInfosView) {
+    // Configure hr
+    hr.configure(args);
 
     // Define base application
-    var Application = yapp.Application.extend({
+    var Application = hr.Application.extend({
         name: "Gitrap",
         template: "main.html",
         metas: {
             "description": ""
         },
         links: {
-            "icon": yapp.Urls.static("images/favicon.png")
+            "icon": hr.Urls.static("images/favicon.png")
         },
         routes: {
             ":owner/:name": "changeConversation"
@@ -103,7 +103,7 @@ require([
         initRepo: function(e) {
             var that = this;
             if (e != null) e.preventDefault();
-            yapp.Cache.clear();
+            hr.Cache.clear();
             this.repo.checkBranch("gitrap", true, {
                 cache: false
             }).done(function() {

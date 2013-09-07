@@ -45,7 +45,7 @@ It's really simple : GitRap uses a separate branch named "gitrap" in the source 
 
 ## Install
 
-This is a simple client-side application built using [yapp.js](https://github.com/FriendCode/yapp.js), you can use it at : [friendcode.github.io/gitrap/](https://github.com/FriendCode/gitrap).
+This is a simple client-side application built using [hr.js](https://github.com/FriendCode/hr.js), you can use it at : [friendcode.github.io/gitrap/](https://github.com/FriendCode/gitrap).
 
 Install and build on your local machine :
 

@@ -1,14 +1,14 @@
 SHELL = bash
 NODE = $(shell which node)
 NPM = $(shell which npm)
-YAPP = node_modules/yapp/bin/yapp.js
+HR = node_modules/hr.js/bin/hr.js
 
 .PHONY: all
 
 all: build_static run
 
 build_static:
-	$(YAPP) build
+	$(HR) build
 
 install:
 ifeq ($(NPM),)
@@ -19,4 +19,4 @@ else
 endif
 
 run:
-	$(YAPP) run
+	$(HR) run

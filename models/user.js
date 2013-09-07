@@ -1,7 +1,7 @@
 define([
-    "yapp/yapp",
+    "hr/hr",
     "models/github"
-], function(yapp, GithubModel) {
+], function(hr, GithubModel) {
     var User = GithubModel.extend({
         defaults: {
 

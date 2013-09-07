@@ -1,7 +1,7 @@
 define([
-    "yapp/yapp"
-], function(yapp) {
-    var GithubModel = yapp.Model.extend({
+    "hr/hr"
+], function(hr) {
+    var GithubModel = hr.Model.extend({
     	/*
     	 *	Return api interface
     	 */

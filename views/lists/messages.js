@@ -1,19 +1,19 @@
 define([
     "Underscore",
-    "yapp/yapp",
+    "hr/hr",
     "vendors/markdown",
     "models/message",
     "utils/github"
-], function(_, yapp, markdown, Message, github) {
-    var logging = yapp.Logger.addNamespace("messages");
+], function(_, hr, markdown, Message, github) {
+    var logging = hr.Logger.addNamespace("messages");
 
     // Collection
-    var Messages = yapp.Collection.extend({
+    var Messages = hr.Collection.extend({
         model: Message,
     });
 
     // List Item View
-    var MessageItem = yapp.List.Item.extend({
+    var MessageItem = hr.List.Item.extend({
         className: "message-item",
         template: "lists/message.html",
         events: {
@@ -53,19 +53,19 @@ define([
     });
 
     // List View
-    var MessagesList = yapp.List.extend({
+    var MessagesList = hr.List.extend({
         className: "list-messages",
         Collection: Messages,
         Item: MessageItem,
         defaults: _.defaults({
             loadAtInit: false
-        }, yapp.List.prototype.defaults),
+        }, hr.List.prototype.defaults),
     }, {
         Collection: Messages,
         Item: MessageItem
     });
 
-    yapp.View.Template.registerComponent("list.messages", MessagesList);
+    hr.View.Template.registerComponent("list.messages", MessagesList);
 
     return MessagesList;
 });

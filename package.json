@@ -4,7 +4,7 @@
     "description": "Git based forums.",
     "version": "0.0.1",
     "dependencies": {
-        "yapp.js": "0.1.1"
+        "hr.js": "0.1.1"
     },
     "engines": {
         "node": "0.8.x",

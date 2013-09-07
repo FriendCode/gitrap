@@ -1,14 +1,14 @@
 define([
 	"Underscore",
-	"yapp/yapp",
+	"hr/hr",
 	"vendors/base64",
 	"models/repo",
 	"models/user"
-], function(_, yapp, Base64, Repo, User) {
+], function(_, hr, Base64, Repo, User) {
 
-	var Repos = yapp.Collection.extend({model: Repo});
+	var Repos = hr.Collection.extend({model: Repo});
 
-	var Github = yapp.Class.extend({
+	var Github = hr.Class.extend({
 		API_URL: 'https://api.github.com/',
 		Repo: Repo,
 		User: User,
@@ -23,7 +23,7 @@ define([
 		initialize: function() {
 			Github.__super__.initialize.apply(this, arguments);
 			this.logged = false;
-			this.cache = yapp.Cache.namespace("github");
+			this.cache = hr.Cache.namespace("github");
 			this.user = new User();
 			this.repos = new Repos();
 			return this;
@@ -34,7 +34,7 @@ define([
 		 */
 		request: function(method, path, data, options) {
 			var that = this;
-			var d = new yapp.Deferred();
+			var d = new hr.Deferred();
 			var url = that.API_URL + path;
 
 			options = _.extend({
@@ -83,7 +83,7 @@ define([
 				username: username,
 				password: password
 			};
-			this.cache = yapp.Cache.namespace("github:"+username);
+			this.cache = hr.Cache.namespace("github:"+username);
 
 			return this.getUser(null, _.extend({
 				cache: true
@@ -98,7 +98,7 @@ define([
 		 *	@username : (string)
 		 */
 		getUser: function(username, options) {
-			var d = new yapp.Deferred();
+			var d = new hr.Deferred();
 			var user = username ? new User({}) : this.user;
 			this.request("GET", username ? "users/"+username : "user").then(function(data) {
 				user.set(data);
@@ -113,7 +113,7 @@ define([
 		 */
 		getRepos: function(user, options) {
 			user = _.isString(user) ? user : user.get("login");
-			var d = new yapp.Deferred();
+			var d = new hr.Deferred();
 			this.request("GET", "users/"+user+"/repos?type=all", null, options).then(function(data) {
 				d.resolve(_.map(data, function(repo) {
 					return new Repo({}, repo);

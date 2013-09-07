@@ -1,11 +1,11 @@
 define([
     "jQuery",
-    "yapp/yapp",
+    "hr/hr",
     "utils/github",
     "models/message"
-], function($, yapp, github, Message) {
+], function($, hr, github, Message) {
 
-    var ConversationView = yapp.View.extend({
+    var ConversationView = hr.View.extend({
         tagName: "div",
         className: "conversation",
         template: "conversation.html",

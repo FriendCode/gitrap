@@ -1,10 +1,10 @@
 define([
     "jQuery",
-    "yapp/yapp",
+    "hr/hr",
     "utils/github"
-], function($, yapp, github) {
+], function($, hr, github) {
 
-    var RepoInfosView = yapp.View.extend({
+    var RepoInfosView = hr.View.extend({
         tagName: "div",
         className: "repo-infos",
         template: "repoinfos.html",

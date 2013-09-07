@@ -1,8 +1,8 @@
 define([
-    "yapp/yapp",
+    "hr/hr",
     "vendors/base64",
     "models/github"
-], function(yapp, Base64, GithubModel) {
+], function(hr, Base64, GithubModel) {
     var Message = GithubModel.extend({
         defaults: {
         	sha: null,
@@ -36,7 +36,7 @@ define([
             newpath = (path != null && path.length > 0) ? path+"/"+newpath : newpath;
 
             return this.repo.write("gitrap", newpath, content, "GitRap message").done(function() {
-                yapp.Cache.clear();
+                hr.Cache.clear();
             });
         },
 
@@ -45,7 +45,7 @@ define([
          */
         getBody: function(options) {
             var that = this;
-            var d = new yapp.Deferred();
+            var d = new hr.Deferred();
             this.repo.getContent("gitrap", this.get("path")+"/README.md", {
                 "raw": true
             }).then(function(content) {
@@ -60,7 +60,7 @@ define([
          */
         getInfos: function(options) {
             var that = this;
-            var d = new yapp.Deferred();
+            var d = new hr.Deferred();
             this.repo.getCommits({
                 "sha": "gitrap",
                 "path": this.get("path")

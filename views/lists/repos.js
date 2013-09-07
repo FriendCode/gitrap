@@ -1,13 +1,13 @@
 define([
     "Underscore",
-    "yapp/yapp",
+    "hr/hr",
     "models/repo",
     "utils/github"
-], function(_, yapp, Repo, github) {
-    var logging = yapp.Logger.addNamespace("repos");
+], function(_, hr, Repo, github) {
+    var logging = hr.Logger.addNamespace("repos");
 
     // List Item View
-    var RepoItem = yapp.List.Item.extend({
+    var RepoItem = hr.List.Item.extend({
         className: "repo-item",
         template: "lists/repo.html",
         events: {
@@ -23,7 +23,7 @@ define([
             return RepoItem.__super__.finish.apply(this, arguments);
         },
         open: function() {
-            yapp.History.navigate(":username/:repo", {
+            hr.History.navigate(":username/:repo", {
                 username: this.model.get("owner.login"),
                 repo: this.model.get("name")
             });
@@ -31,12 +31,12 @@ define([
     });
 
     // List View
-    var ReposList = yapp.List.extend({
+    var ReposList = hr.List.extend({
         className: "list-repos",
         Item: RepoItem,
         defaults: _.defaults({
             collection: github.repos
-        }, yapp.List.prototype.defaults),
+        }, hr.List.prototype.defaults),
 
         /* Constructor */
         initialize: function() {
@@ -48,7 +48,7 @@ define([
         Item: RepoItem
     });
 
-    yapp.View.Template.registerComponent("list.repos", ReposList);
+    hr.View.Template.registerComponent("list.repos", ReposList);
 
     return ReposList;
 });

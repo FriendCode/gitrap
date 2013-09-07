@@ -1,9 +1,9 @@
 define([
-    "yapp/yapp",
+    "hr/hr",
     "models/github",
     "models/message",
     "models/user"
-], function(yapp, GithubModel, Message, User) {
+], function(hr, GithubModel, Message, User) {
     var Repo = GithubModel.extend({
         defaults: {
 
@@ -21,7 +21,7 @@ define([
          */
         load: function(owner, name, options) {
             var that = this;
-            var d = new yapp.Deferred();
+            var d = new hr.Deferred();
             this.api().request("GET", this._path(owner, name), null, _.extend({
                 cache: true
             }, options || {})).then(function(data) {
@@ -35,7 +35,7 @@ define([
          *  List branches
          */
         listBranches: function(options) {
-            var d = new yapp.Deferred();
+            var d = new hr.Deferred();
             this.api().request("GET", this._path()+"/git/refs/heads", null, _.extend({
                 cache: true
             }, options || {})).then(function(heads) {
@@ -128,7 +128,7 @@ define([
          */
         createBranche: function(name, base, options) {
             var that = this;
-            var d = new yapp.Deferred();
+            var d = new hr.Deferred();
 
             if (base == null) {
                 this.createTree({
@@ -159,7 +159,7 @@ define([
          */
         checkBranch: function(name, create, options) {
             var that = this;
-            var d = new yapp.Deferred();
+            var d = new hr.Deferred();
             this.listBranches(options).done(function(branches) {
                 if (_.contains(branches, name)) return d.resolve();
                 if (create) return d.resolve(that.createBranche(name));
@@ -173,7 +173,7 @@ define([
          *  @sha : sha for the tree
          */
         listTree: function(sha, options) {
-            var d = new yapp.Deferred();
+            var d = new hr.Deferred();
             this.api().request("GET", this._path()+"/git/trees/"+sha, null, _.extend({
                 cache: true
             }, options || {})).then(function(data) {
@@ -186,7 +186,7 @@ define([
          *  Get commits
          */
         getCommits: function(condition, options) {
-            var d = new yapp.Deferred();
+            var d = new hr.Deferred();
             this.api().request("GET", this._path()+"/commits?"+$.param(condition), null, _.extend({
                 cache: true
             }, options || {})).then(function(data) {
@@ -201,7 +201,7 @@ define([
          *  @path ; path to the file/dir
          */
         getContent: function(ref, path, options) {
-            var d = new yapp.Deferred();
+            var d = new hr.Deferred();
             this.api().request("GET", this._path()+"/contents?ref="+ref+"&path="+path, null, _.extend({
                 cache: true
             }, options || {})).then(function(data) {
@@ -234,7 +234,7 @@ define([
         listMessages: function(path, options) {
             path = path || "";
             var that = this;
-            var d = new yapp.Deferred();
+            var d = new hr.Deferred();
             this.getContent("gitrap", path, options).then(function(tree) {
                 var messages = _.map(_.filter(tree, function(file) {
                     return file.type == "dir";
@@ -255,7 +255,7 @@ define([
          *  List collaborators
          */
         listCollaborators: function(options) {
-            var d = new yapp.Deferred();
+            var d = new hr.Deferred();
             this.api().request("GET", this._path()+"/collaborators", null, _.extend({
                 cache: true
             }, options || {})).then(function(collaborators) {

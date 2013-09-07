@@ -1,10 +1,10 @@
 define([
     "jQuery",
-    "yapp/yapp",
+    "hr/hr",
     "utils/github"
-], function($, yapp, github) {
+], function($, hr, github) {
 
-    var LoginView = yapp.View.extend({
+    var LoginView = hr.View.extend({
         tagName: "div",
         className: "login-box",
         template: "login.html",
@@ -18,8 +18,8 @@ define([
         },
         templateContext: function() {
             return {
-                username: yapp.Storage.get("github-username"),
-                password: yapp.Storage.get("github-password")
+                username: hr.Storage.get("github-username"),
+                password: hr.Storage.get("github-password")
             }
         },
 
@@ -34,11 +34,11 @@ define([
             github.login(username, password);
 
             // Store username
-            yapp.Storage.set("github-username", username);
-            yapp.Storage.set("github-password", password);
+            hr.Storage.set("github-username", username);
+            hr.Storage.set("github-password", password);
         }
     });
-    yapp.View.Template.registerComponent("login", LoginView);
+    hr.View.Template.registerComponent("login", LoginView);
 
     return LoginView;
 });
