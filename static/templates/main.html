@@ -4,7 +4,7 @@
 			<%= view.component("login", {}, "login") %>
 		<% } else { %>
 			<div class="main-repos">
-				<img class="logo" src="<%- yapp.urls.static("images/favicon.png") %>" />
+				<img class="logo" src="<%- hr.urls.static("images/favicon.png") %>" />
 				<%= view.component("list.repos", {}, "repos") %>
 				<a href="<%- user.get("html_url") %>" target="_blank" class="action-link-user"><%- user.get("name") %></a>
 			</div>

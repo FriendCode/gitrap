@@ -12127,7 +12127,7 @@ define("jQuery", (function (global) {
 }(this)));
 
 
-define('yapp/shims',[],function() {
+define('hr/shims',[],function() {
     if(!Function.prototype.bind) {
       Function.prototype.bind = function(newThis) {
         var that = this;
@@ -12139,7 +12139,7 @@ define('yapp/shims',[],function() {
 
     return {};
 });
-define('yapp/configs',['require'],function(args) {
+define('hr/configs',['require'],function(args) {
     var Config = {
         // Revision
         "revision": 0,
@@ -12147,8 +12147,8 @@ define('yapp/configs',['require'],function(args) {
         // Arguments
         "args": {},
 
-        // Yapp version
-        "version": "0.0.1",
+        // Hr version
+        "version": "0.1.1",
 
         // Log level
         // "log", "debug", "warn", "error", "none"
@@ -13413,14 +13413,14 @@ define("Underscore", (function (global) {
     };
 }(this)));
 
-define('yapp/core/class',[
+define('hr/core/class',[
     "Underscore",
 ], function(_) {
     // Regular expression used to split event strings.
     var eventSplitter = /\s+/;
 
     /*
-     *  yapp.Class is the base for objects in yapp
+     *  hr.Class is the base for objects in hr
      */
     var Class = function(options) {
         this.options = _.extend({}, options || {});
@@ -22458,9 +22458,9 @@ define("jQuery", (function (global) {
     };
 }(this)));
 
-define('yapp/utils/logger',[
-    "yapp/configs",
-    "yapp/core/class"
+define('hr/utils/logger',[
+    "hr/configs",
+    "hr/core/class"
 ], function(configs, Class) {
     var Logger = Class.extend({
         /*
@@ -22553,9 +22553,9 @@ define('yapp/utils/logger',[
 
     return Logger;
 });
-define('yapp/utils/urls',[
+define('hr/utils/urls',[
     "Underscore",
-    "yapp/configs"
+    "hr/configs"
 ], function(_, configs) {
     var Urls = {
         /*
@@ -22636,10 +22636,10 @@ define('yapp/utils/urls',[
 
     return Urls;
 });
-define('yapp/utils/storage',[
+define('hr/utils/storage',[
     "Underscore",
-    "yapp/configs",
-    "yapp/utils/logger"
+    "hr/configs",
+    "hr/utils/logger"
 ], function(_, configs, Logger) {
 
     var logging = Logger.addNamespace("storage");
@@ -22729,11 +22729,11 @@ define('yapp/utils/storage',[
 
     return Storage;
 });
-define('yapp/utils/cache',[
+define('hr/utils/cache',[
     "Underscore",
-    "yapp/configs",
-    "yapp/utils/logger",
-    "yapp/utils/storage"
+    "hr/configs",
+    "hr/utils/logger",
+    "hr/utils/storage"
 ], function(_, configs, Logger, Storage) {
 
     var logging = Logger.addNamespace("cache");
@@ -22855,9 +22855,9 @@ define('yapp/utils/cache',[
 
     return Cache;
 });
-define('yapp/utils/deferred',[
+define('hr/utils/deferred',[
     "Underscore",
-    "yapp/core/class",
+    "hr/core/class",
 ], function(_, Class) {    
     /* 
     * Deferred is an implementation of the Promise pattern, which allows
@@ -22974,11 +22974,11 @@ define('yapp/utils/deferred',[
 
     return Deferred;
 });
-define('yapp/utils/requests',[
-    "yapp/configs",
-    "yapp/core/class",
-    "yapp/utils/logger",
-    "yapp/utils/deferred"
+define('hr/utils/requests',[
+    "hr/configs",
+    "hr/core/class",
+    "hr/utils/logger",
+    "hr/utils/deferred"
 ], function(configs, Class, Logger, Deferred) {
     
     var logging = Logger.addNamespace("requests");
@@ -23072,18 +23072,57 @@ define('yapp/utils/requests',[
                 method: "POST",
                 params: args
             });
+        },
+
+        /*
+         *  Method for a PUT method
+         *  @url : url to request 
+         *  @args : arguments for PUT
+         *  @callback : callback for results
+         */
+        put: function(url, args, options) {
+            return Requests._execute(url, options, {
+                method: "PUT",
+                params: args
+            });
+        },
+
+        /*
+         *  Method for a DELETE method
+         *  @url : url to request 
+         *  @args : arguments for DELETE
+         *  @callback : callback for results
+         */
+        delete: function(url, args, options) {
+            return Requests._execute(url, options, {
+                method: "DELETE",
+                params: args
+            });
+        },
+
+        /*
+         *  Method for a HEAD method
+         *  @url : url to request 
+         *  @args : arguments for HEAD
+         *  @callback : callback for results
+         */
+        head: function(url, args, options) {
+            return Requests._execute(url, options, {
+                method: "HEAD",
+                params: args
+            });
         }
     });
     return Requests;
 });
-define('yapp/utils/resources',[
+define('hr/utils/resources',[
     "Underscore",
-    "yapp/configs",
-    "yapp/utils/logger",
-    "yapp/utils/cache",
-    "yapp/utils/requests",
-    "yapp/utils/urls",
-    "yapp/utils/deferred",
+    "hr/configs",
+    "hr/utils/logger",
+    "hr/utils/cache",
+    "hr/utils/requests",
+    "hr/utils/urls",
+    "hr/utils/deferred",
 ], function(_, configs, Logger, Cache, Requests, Urls, Deferred) {
 
     var logging = Logger.addNamespace("resources");
@@ -23180,14 +23219,14 @@ define('yapp/utils/resources',[
 
     return Resources;
 });
-define('yapp/utils/i18n',[
+define('hr/utils/i18n',[
     "jQuery",
     "Underscore",
-    "yapp/configs",
-    "yapp/utils/urls",
-    "yapp/utils/logger",
-    "yapp/utils/resources",
-    "yapp/utils/deferred"
+    "hr/configs",
+    "hr/utils/urls",
+    "hr/utils/logger",
+    "hr/utils/resources",
+    "hr/utils/deferred"
 ], function($, _, configs, Urls, Logger, Resources, Deferred) {
     var logging = Logger.addNamespace("i18n");
     var I18n = {};
@@ -23211,7 +23250,7 @@ define('yapp/utils/i18n',[
 
         _.extend(options, {
             "_": _,
-            "yapp": {
+            "hr": {
                 "configs": configs,
                 "urls": Urls
             }
@@ -23310,14 +23349,14 @@ define('yapp/utils/i18n',[
 
     return I18n;
 });
-define('yapp/utils/template',[
+define('hr/utils/template',[
     "Underscore",
-    "yapp/configs",
-    "yapp/core/class",
-    "yapp/utils/logger",
-    "yapp/utils/urls",
-    "yapp/utils/resources",
-    "yapp/utils/i18n"
+    "hr/configs",
+    "hr/core/class",
+    "hr/utils/logger",
+    "hr/utils/urls",
+    "hr/utils/resources",
+    "hr/utils/i18n"
 ], function(_, configs, Class, Logger, Urls, Resources, I18n) {
     var Template = Class.extend({
         defaults: {
@@ -23344,7 +23383,7 @@ define('yapp/utils/template',[
             // Init template context
             _.extend(this.args, {
                 "_": _,
-                "yapp": {
+                "hr": {
                     "configs": configs,
                     "urls": Urls,
                     "i18n": I18n,
@@ -23457,7 +23496,7 @@ define('yapp/utils/template',[
                 if (distance_in_minutes == 1) { msgid = 'minute'; }
                 if (distance_in_minutes == 0) { msgid = 'seconds'; }
 
-                return I18n.t("yapp.utils.timeago."+msgid, {
+                return I18n.t("hr.utils.timeago."+msgid, {
                     "months": Math.floor(distance_in_minutes / 43200),
                     "days": Math.floor(distance_in_minutes / 1440),
                     "hours": Math.round(distance_in_minutes / 60),
@@ -23491,12 +23530,12 @@ define('yapp/utils/template',[
 
     return Template;
 });
-define('yapp/core/view',[
+define('hr/core/view',[
     "jQuery",
     "Underscore",
-    "yapp/core/class",
-    "yapp/utils/template",
-    "yapp/utils/deferred"
+    "hr/core/class",
+    "hr/utils/template",
+    "hr/utils/deferred"
 ], function($, _, Class, Template, Deferred) {
 
     var delegateEventSplitter = /^(\S+)\s*(.*)$/;
@@ -23785,10 +23824,10 @@ define('yapp/core/view',[
 
     return View;
 });
-define('yapp/core/head',[
+define('hr/core/head',[
     "jQuery",
     "Underscore",
-    "yapp/core/view"
+    "hr/core/view"
 ], function($, _, View) {
     var Head = View.extend({
         el: $("head"),
@@ -23925,13 +23964,13 @@ define('yapp/core/head',[
 
     return Head;
 });
-define('yapp/core/history',[
+define('hr/core/history',[
     "jQuery",
     "Underscore",
-    "yapp/configs",
-    "yapp/core/class",
-    "yapp/utils/logger",
-    "yapp/utils/urls",
+    "hr/configs",
+    "hr/core/class",
+    "hr/utils/logger",
+    "hr/utils/urls",
 ], function($, _, configs, Class, Logger, Urls) {
 
     var logging = Logger.addNamespace("history");
@@ -24023,12 +24062,12 @@ define('yapp/core/history',[
 
     return History;
 });
-define('yapp/core/router',[
+define('hr/core/router',[
     "jQuery",
     "Underscore",
-    "yapp/core/class",
-    "yapp/core/history",
-    "yapp/utils/logger",
+    "hr/core/class",
+    "hr/core/history",
+    "hr/utils/logger",
 ], function($, _, Class, History, Logger) {
 
     // Add specifif logs handler
@@ -24119,13 +24158,13 @@ define('yapp/core/router',[
 
     return Router;
 });
-define('yapp/core/application',[
+define('hr/core/application',[
     "jQuery",
     "Underscore",
-    "yapp/core/view",
-    "yapp/core/head",
-    "yapp/core/router",
-    "yapp/utils/logger"
+    "hr/core/view",
+    "hr/core/head",
+    "hr/core/router",
+    "hr/utils/logger"
 ], function($, _, View, Head, Router, Logger) {
 
     var logging = Logger.addNamespace("application");
@@ -24179,8 +24218,8 @@ define('yapp/core/application',[
         run: function() {
             logging.log("Run application", this.name);
 
-            var yapp = require("yapp/yapp");
-            yapp.app = this;
+            var hr = require("hr/hr");
+            hr.app = this;
             this.render();
             return this;
         },
@@ -24223,10 +24262,10 @@ define('yapp/core/application',[
 
     return Application;
 });
-define('yapp/core/model',[
+define('hr/core/model',[
     "Underscore",
-    "yapp/core/class",
-    "yapp/utils/logger"
+    "hr/core/class",
+    "hr/utils/logger"
 ], function(_, Class, Logger) {
     var logging = Logger.addNamespace("models");
 
@@ -24518,10 +24557,10 @@ define('yapp/core/model',[
 
     return Model;
 });
-define('yapp/utils/queue',[
+define('hr/utils/queue',[
     "Underscore",
-    "yapp/core/class",
-    "yapp/utils/deferred"
+    "hr/core/class",
+    "hr/utils/deferred"
 ], function(_, Class, Deferred) {
     var Queue = Class.extend({
         /*
@@ -24604,13 +24643,13 @@ define('yapp/utils/queue',[
 
     return Queue;
 });
-define('yapp/core/collection',[
+define('hr/core/collection',[
     "Underscore",
-    "yapp/core/class",
-    "yapp/core/model",
-    "yapp/utils/logger",
-    "yapp/utils/deferred",
-    "yapp/utils/queue"
+    "hr/core/class",
+    "hr/core/model",
+    "hr/utils/logger",
+    "hr/utils/deferred",
+    "hr/utils/queue"
 ], function(_, Class, Model, Logger, Deferred, Queue) {
     var logging = Logger.addNamespace("collections");
 
@@ -24936,11 +24975,11 @@ define('yapp/core/collection',[
 
     return Collection;
 });
-define('yapp/core/list',[
+define('hr/core/list',[
     "Underscore",
-    "yapp/core/view",
-    "yapp/utils/logger",
-    "yapp/core/collection"
+    "hr/core/view",
+    "hr/utils/logger",
+    "hr/core/collection"
 ], function(_, View, Logger, Collection) {
 
     var logging = Logger.addNamespace("lists");
@@ -25232,7 +25271,7 @@ define('yapp/core/list',[
          */
         displayHasMore: function() {
             var btn = $("<div>", {
-                "class": "alert yapp-list-message yapp-list-message-more",
+                "class": "alert hr-list-message hr-list-message-more",
                 "data-list-action": "showmore",
                 "text": this.hasMore(),
             });
@@ -25244,15 +25283,15 @@ define('yapp/core/list',[
          *  Render the list
          */
         render: function() {
-            this.$(".yapp-list-message").remove();
+            this.$(".hr-list-message").remove();
             if (this.collection.queue.isComplete() == false) {
                 $("<div>", {
-                    "class": "yapp-list-message yapp-list-message-loading"
+                    "class": "hr-list-message hr-list-message-loading"
                 }).appendTo(this.$el);
             } else {
                 if (this.count() == 0 && this.options.displayEmptyList) {
                     var el = this.displayEmptyList();
-                    $(el).addClass("yapp-list-message yapp-list-message-empty").appendTo(this.$el);
+                    $(el).addClass("hr-list-message hr-list-message-empty").appendTo(this.$el);
                 }
                 if (this.hasMore() > 0 && this.options.displayHasMore) this.displayHasMore();
             }
@@ -25264,10 +25303,10 @@ define('yapp/core/list',[
 
     return ListView;
 });
-define('yapp/utils/views',[
+define('hr/utils/views',[
     "Underscore",
-    "yapp/core/view",
-    "yapp/utils/template"
+    "hr/core/view",
+    "hr/utils/template"
 ], function(_, View, Template) {
     
     var RelativeDateView = View.extend({
@@ -25294,13 +25333,13 @@ define('yapp/utils/views',[
             return this.ready();
         },
     });
-    Template.registerComponent("yapp.date.relative", RelativeDateView);
+    Template.registerComponent("hr.date.relative", RelativeDateView);
 
     return {
         "RelativeDate": RelativeDateView
     };
 });
-define('yapp/vendors/underscore-more',[
+define('hr/vendors/underscore-more',[
     "Underscore",
     "jQuery",
 ], function(_, $) {
@@ -25417,32 +25456,32 @@ define('yapp/vendors/underscore-more',[
 
     return _;
 });
-define('yapp/yapp',[
-    "yapp/shims",
-    "yapp/configs",
-    "yapp/core/class",
-    "yapp/core/view",
-    "yapp/core/application",
-    "yapp/core/head",
-    "yapp/core/history",
-    "yapp/core/router",
-    "yapp/core/model",
-    "yapp/core/collection",
-    "yapp/core/list",
+define('hr/hr',[
+    "hr/shims",
+    "hr/configs",
+    "hr/core/class",
+    "hr/core/view",
+    "hr/core/application",
+    "hr/core/head",
+    "hr/core/history",
+    "hr/core/router",
+    "hr/core/model",
+    "hr/core/collection",
+    "hr/core/list",
 
-    "yapp/utils/logger",
-    "yapp/utils/requests",
-    "yapp/utils/urls",
-    "yapp/utils/storage",
-    "yapp/utils/cache",
-    "yapp/utils/template",
-    "yapp/utils/resources",
-    "yapp/utils/deferred",
-    "yapp/utils/queue",
-    "yapp/utils/i18n",
-    "yapp/utils/views",
+    "hr/utils/logger",
+    "hr/utils/requests",
+    "hr/utils/urls",
+    "hr/utils/storage",
+    "hr/utils/cache",
+    "hr/utils/template",
+    "hr/utils/resources",
+    "hr/utils/deferred",
+    "hr/utils/queue",
+    "hr/utils/i18n",
+    "hr/utils/views",
 
-    "yapp/vendors/underscore-more"
+    "hr/vendors/underscore-more"
 ], function(shims, configs, 
 Class, View, Application, Head, History, Router, Model, Collection, ListView,
 Logger, Requests, Urls, Storage, Cache, Template, Resources, Deferred, Queue, I18n, views) {    
@@ -25476,7 +25515,7 @@ Logger, Requests, Urls, Storage, Cache, Template, Resources, Deferred, Queue, I1
             options = options || {};
             args = args || {};
             if (args.revision == null) {
-                Logger.logging.error("Error invalid configuration for yapp");
+                Logger.logging.error("Error invalid configuration for hr");
                 return;
             }
 
@@ -25488,7 +25527,7 @@ Logger, Requests, Urls, Storage, Cache, Template, Resources, Deferred, Queue, I1
         }
     }
 });
-define('yapp/args',[],function() { return {"revision":1378100566791,"baseUrl":"/gitrap/"}; });
+define('hr/args',[],function() { return {"revision":1378594607780,"baseUrl":"/gitrap/"}; });
 // This code was written by Tyler Akins and has been placed in the
 // public domain.  It would be nice if you left this header intact.
 // Base64 code from Tyler Akins -- http://rumkin.com
@@ -25584,9 +25623,9 @@ define("vendors/base64", (function (global) {
 }(this)));
 
 define('models/github',[
-    "yapp/yapp"
-], function(yapp) {
-    var GithubModel = yapp.Model.extend({
+    "hr/hr"
+], function(hr) {
+    var GithubModel = hr.Model.extend({
     	/*
     	 *	Return api interface
     	 */
@@ -25597,10 +25636,10 @@ define('models/github',[
     return GithubModel;
 });
 define('models/message',[
-    "yapp/yapp",
+    "hr/hr",
     "vendors/base64",
     "models/github"
-], function(yapp, Base64, GithubModel) {
+], function(hr, Base64, GithubModel) {
     var Message = GithubModel.extend({
         defaults: {
         	sha: null,
@@ -25634,7 +25673,7 @@ define('models/message',[
             newpath = (path != null && path.length > 0) ? path+"/"+newpath : newpath;
 
             return this.repo.write("gitrap", newpath, content, "GitRap message").done(function() {
-                yapp.Cache.clear();
+                hr.Cache.clear();
             });
         },
 
@@ -25643,7 +25682,7 @@ define('models/message',[
          */
         getBody: function(options) {
             var that = this;
-            var d = new yapp.Deferred();
+            var d = new hr.Deferred();
             this.repo.getContent("gitrap", this.get("path")+"/README.md", {
                 "raw": true
             }).then(function(content) {
@@ -25658,7 +25697,7 @@ define('models/message',[
          */
         getInfos: function(options) {
             var that = this;
-            var d = new yapp.Deferred();
+            var d = new hr.Deferred();
             this.repo.getCommits({
                 "sha": "gitrap",
                 "path": this.get("path")
@@ -25685,9 +25724,9 @@ define('models/message',[
     return Message;
 });
 define('models/user',[
-    "yapp/yapp",
+    "hr/hr",
     "models/github"
-], function(yapp, GithubModel) {
+], function(hr, GithubModel) {
     var User = GithubModel.extend({
         defaults: {
 
@@ -25697,11 +25736,11 @@ define('models/user',[
     return User;
 });
 define('models/repo',[
-    "yapp/yapp",
+    "hr/hr",
     "models/github",
     "models/message",
     "models/user"
-], function(yapp, GithubModel, Message, User) {
+], function(hr, GithubModel, Message, User) {
     var Repo = GithubModel.extend({
         defaults: {
 
@@ -25719,7 +25758,7 @@ define('models/repo',[
          */
         load: function(owner, name, options) {
             var that = this;
-            var d = new yapp.Deferred();
+            var d = new hr.Deferred();
             this.api().request("GET", this._path(owner, name), null, _.extend({
                 cache: true
             }, options || {})).then(function(data) {
@@ -25733,7 +25772,7 @@ define('models/repo',[
          *  List branches
          */
         listBranches: function(options) {
-            var d = new yapp.Deferred();
+            var d = new hr.Deferred();
             this.api().request("GET", this._path()+"/git/refs/heads", null, _.extend({
                 cache: true
             }, options || {})).then(function(heads) {
@@ -25826,7 +25865,7 @@ define('models/repo',[
          */
         createBranche: function(name, base, options) {
             var that = this;
-            var d = new yapp.Deferred();
+            var d = new hr.Deferred();
 
             if (base == null) {
                 this.createTree({
@@ -25857,7 +25896,7 @@ define('models/repo',[
          */
         checkBranch: function(name, create, options) {
             var that = this;
-            var d = new yapp.Deferred();
+            var d = new hr.Deferred();
             this.listBranches(options).done(function(branches) {
                 if (_.contains(branches, name)) return d.resolve();
                 if (create) return d.resolve(that.createBranche(name));
@@ -25871,7 +25910,7 @@ define('models/repo',[
          *  @sha : sha for the tree
          */
         listTree: function(sha, options) {
-            var d = new yapp.Deferred();
+            var d = new hr.Deferred();
             this.api().request("GET", this._path()+"/git/trees/"+sha, null, _.extend({
                 cache: true
             }, options || {})).then(function(data) {
@@ -25884,7 +25923,7 @@ define('models/repo',[
          *  Get commits
          */
         getCommits: function(condition, options) {
-            var d = new yapp.Deferred();
+            var d = new hr.Deferred();
             this.api().request("GET", this._path()+"/commits?"+$.param(condition), null, _.extend({
                 cache: true
             }, options || {})).then(function(data) {
@@ -25899,7 +25938,7 @@ define('models/repo',[
          *  @path ; path to the file/dir
          */
         getContent: function(ref, path, options) {
-            var d = new yapp.Deferred();
+            var d = new hr.Deferred();
             this.api().request("GET", this._path()+"/contents?ref="+ref+"&path="+path, null, _.extend({
                 cache: true
             }, options || {})).then(function(data) {
@@ -25932,7 +25971,7 @@ define('models/repo',[
         listMessages: function(path, options) {
             path = path || "";
             var that = this;
-            var d = new yapp.Deferred();
+            var d = new hr.Deferred();
             this.getContent("gitrap", path, options).then(function(tree) {
                 var messages = _.map(_.filter(tree, function(file) {
                     return file.type == "dir";
@@ -25953,7 +25992,7 @@ define('models/repo',[
          *  List collaborators
          */
         listCollaborators: function(options) {
-            var d = new yapp.Deferred();
+            var d = new hr.Deferred();
             this.api().request("GET", this._path()+"/collaborators", null, _.extend({
                 cache: true
             }, options || {})).then(function(collaborators) {
@@ -25967,15 +26006,15 @@ define('models/repo',[
 });
 define('utils/github',[
 	"Underscore",
-	"yapp/yapp",
+	"hr/hr",
 	"vendors/base64",
 	"models/repo",
 	"models/user"
-], function(_, yapp, Base64, Repo, User) {
+], function(_, hr, Base64, Repo, User) {
 
-	var Repos = yapp.Collection.extend({model: Repo});
+	var Repos = hr.Collection.extend({model: Repo});
 
-	var Github = yapp.Class.extend({
+	var Github = hr.Class.extend({
 		API_URL: 'https://api.github.com/',
 		Repo: Repo,
 		User: User,
@@ -25990,7 +26029,7 @@ define('utils/github',[
 		initialize: function() {
 			Github.__super__.initialize.apply(this, arguments);
 			this.logged = false;
-			this.cache = yapp.Cache.namespace("github");
+			this.cache = hr.Cache.namespace("github");
 			this.user = new User();
 			this.repos = new Repos();
 			return this;
@@ -26001,7 +26040,7 @@ define('utils/github',[
 		 */
 		request: function(method, path, data, options) {
 			var that = this;
-			var d = new yapp.Deferred();
+			var d = new hr.Deferred();
 			var url = that.API_URL + path;
 
 			options = _.extend({
@@ -26050,7 +26089,7 @@ define('utils/github',[
 				username: username,
 				password: password
 			};
-			this.cache = yapp.Cache.namespace("github:"+username);
+			this.cache = hr.Cache.namespace("github:"+username);
 
 			return this.getUser(null, _.extend({
 				cache: true
@@ -26065,7 +26104,7 @@ define('utils/github',[
 		 *	@username : (string)
 		 */
 		getUser: function(username, options) {
-			var d = new yapp.Deferred();
+			var d = new hr.Deferred();
 			var user = username ? new User({}) : this.user;
 			this.request("GET", username ? "users/"+username : "user").then(function(data) {
 				user.set(data);
@@ -26080,7 +26119,7 @@ define('utils/github',[
 		 */
 		getRepos: function(user, options) {
 			user = _.isString(user) ? user : user.get("login");
-			var d = new yapp.Deferred();
+			var d = new hr.Deferred();
 			this.request("GET", "users/"+user+"/repos?type=all", null, options).then(function(data) {
 				d.resolve(_.map(data, function(repo) {
 					return new Repo({}, repo);
@@ -26107,12 +26146,12 @@ define('utils/github',[
 });
 define('views/conversation',[
     "jQuery",
-    "yapp/yapp",
+    "hr/hr",
     "utils/github",
     "models/message"
-], function($, yapp, github, Message) {
+], function($, hr, github, Message) {
 
-    var ConversationView = yapp.View.extend({
+    var ConversationView = hr.View.extend({
         tagName: "div",
         className: "conversation",
         template: "conversation.html",
@@ -26180,11 +26219,11 @@ define('views/conversation',[
 });
 define('views/repoinfos',[
     "jQuery",
-    "yapp/yapp",
+    "hr/hr",
     "utils/github"
-], function($, yapp, github) {
+], function($, hr, github) {
 
-    var RepoInfosView = yapp.View.extend({
+    var RepoInfosView = hr.View.extend({
         tagName: "div",
         className: "repo-infos",
         template: "repoinfos.html",
@@ -26215,11 +26254,11 @@ define('views/repoinfos',[
 });
 define('views/login',[
     "jQuery",
-    "yapp/yapp",
+    "hr/hr",
     "utils/github"
-], function($, yapp, github) {
+], function($, hr, github) {
 
-    var LoginView = yapp.View.extend({
+    var LoginView = hr.View.extend({
         tagName: "div",
         className: "login-box",
         template: "login.html",
@@ -26233,8 +26272,8 @@ define('views/login',[
         },
         templateContext: function() {
             return {
-                username: yapp.Storage.get("github-username"),
-                password: yapp.Storage.get("github-password")
+                username: hr.Storage.get("github-username"),
+                password: hr.Storage.get("github-password")
             }
         },
 
@@ -26249,24 +26288,24 @@ define('views/login',[
             github.login(username, password);
 
             // Store username
-            yapp.Storage.set("github-username", username);
-            yapp.Storage.set("github-password", password);
+            hr.Storage.set("github-username", username);
+            hr.Storage.set("github-password", password);
         }
     });
-    yapp.View.Template.registerComponent("login", LoginView);
+    hr.View.Template.registerComponent("login", LoginView);
 
     return LoginView;
 });
 define('views/lists/repos',[
     "Underscore",
-    "yapp/yapp",
+    "hr/hr",
     "models/repo",
     "utils/github"
-], function(_, yapp, Repo, github) {
-    var logging = yapp.Logger.addNamespace("repos");
+], function(_, hr, Repo, github) {
+    var logging = hr.Logger.addNamespace("repos");
 
     // List Item View
-    var RepoItem = yapp.List.Item.extend({
+    var RepoItem = hr.List.Item.extend({
         className: "repo-item",
         template: "lists/repo.html",
         events: {
@@ -26282,7 +26321,7 @@ define('views/lists/repos',[
             return RepoItem.__super__.finish.apply(this, arguments);
         },
         open: function() {
-            yapp.History.navigate(":username/:repo", {
+            hr.History.navigate(":username/:repo", {
                 username: this.model.get("owner.login"),
                 repo: this.model.get("name")
             });
@@ -26290,12 +26329,12 @@ define('views/lists/repos',[
     });
 
     // List View
-    var ReposList = yapp.List.extend({
+    var ReposList = hr.List.extend({
         className: "list-repos",
         Item: RepoItem,
         defaults: _.defaults({
             collection: github.repos
-        }, yapp.List.prototype.defaults),
+        }, hr.List.prototype.defaults),
 
         /* Constructor */
         initialize: function() {
@@ -26307,7 +26346,7 @@ define('views/lists/repos',[
         Item: RepoItem
     });
 
-    yapp.View.Template.registerComponent("list.repos", ReposList);
+    hr.View.Template.registerComponent("list.repos", ReposList);
 
     return ReposList;
 });
@@ -28045,20 +28084,20 @@ define("vendors/markdown", (function (global) {
 
 define('views/lists/messages',[
     "Underscore",
-    "yapp/yapp",
+    "hr/hr",
     "vendors/markdown",
     "models/message",
     "utils/github"
-], function(_, yapp, markdown, Message, github) {
-    var logging = yapp.Logger.addNamespace("messages");
+], function(_, hr, markdown, Message, github) {
+    var logging = hr.Logger.addNamespace("messages");
 
     // Collection
-    var Messages = yapp.Collection.extend({
+    var Messages = hr.Collection.extend({
         model: Message,
     });
 
     // List Item View
-    var MessageItem = yapp.List.Item.extend({
+    var MessageItem = hr.List.Item.extend({
         className: "message-item",
         template: "lists/message.html",
         events: {
@@ -28098,19 +28137,19 @@ define('views/lists/messages',[
     });
 
     // List View
-    var MessagesList = yapp.List.extend({
+    var MessagesList = hr.List.extend({
         className: "list-messages",
         Collection: Messages,
         Item: MessageItem,
         defaults: _.defaults({
             loadAtInit: false
-        }, yapp.List.prototype.defaults),
+        }, hr.List.prototype.defaults),
     }, {
         Collection: Messages,
         Item: MessageItem
     });
 
-    yapp.View.Template.registerComponent("list.messages", MessagesList);
+    hr.View.Template.registerComponent("list.messages", MessagesList);
 
     return MessagesList;
 });
@@ -28122,10 +28161,10 @@ define('views/views',[
 	return arguments;
 });
 define('resources/resources',[
-    "yapp/yapp"
-], function(yapp) {
+    "hr/hr"
+], function(hr) {
 
-    yapp.Resources.addNamespace("templates", {
+    hr.Resources.addNamespace("templates", {
         loader: "http",
         base: "templates"
     });
@@ -28134,8 +28173,8 @@ define('resources/resources',[
 });
 require([
     "Underscore",
-    "yapp/yapp",
-    "yapp/args",
+    "hr/hr",
+    "hr/args",
 
     "vendors/base64",
 
@@ -28147,19 +28186,19 @@ require([
 
     "views/views",
     "resources/resources"
-], function(_, yapp, args, Base64, Repo, Message, github, ConversationView, RepoInfosView) {
-    // Configure yapp
-    yapp.configure(args);
+], function(_, hr, args, Base64, Repo, Message, github, ConversationView, RepoInfosView) {
+    // Configure hr
+    hr.configure(args);
 
     // Define base application
-    var Application = yapp.Application.extend({
+    var Application = hr.Application.extend({
         name: "Gitrap",
         template: "main.html",
         metas: {
             "description": ""
         },
         links: {
-            "icon": yapp.Urls.static("images/favicon.png")
+            "icon": hr.Urls.static("images/favicon.png")
         },
         routes: {
             ":owner/:name": "changeConversation"
@@ -28237,7 +28276,7 @@ require([
         initRepo: function(e) {
             var that = this;
             if (e != null) e.preventDefault();
-            yapp.Cache.clear();
+            hr.Cache.clear();
             this.repo.checkBranch("gitrap", true, {
                 cache: false
             }).done(function() {
