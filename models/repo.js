@@ -122,11 +122,11 @@ define([
         },
 
         /*
-         *  Create branche
-         *  @name : name of the branc (ex: dev)
+         *  Create branch
+         *  @name : name of the branch (ex: dev)
          *  @base : base ref (ex: heads/dev)
          */
-        createBranche: function(name, base, options) {
+        createBranch: function(name, base, options) {
             var that = this;
             var d = new hr.Deferred();
 
@@ -155,14 +155,14 @@ define([
 
         /*
          *  Create if not exists a branch
-         *  @name : branche name to check
+         *  @name : branch name to check
          */
         checkBranch: function(name, create, options) {
             var that = this;
             var d = new hr.Deferred();
             this.listBranches(options).done(function(branches) {
                 if (_.contains(branches, name)) return d.resolve();
-                if (create) return d.resolve(that.createBranche(name));
+                if (create) return d.resolve(that.createBranch(name));
                 return d.reject();
             }, function(err) { d.reject(err); });
             return d;
